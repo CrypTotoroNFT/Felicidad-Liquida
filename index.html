@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00F2FE">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Felicidad Líquida">
+<link rel="apple-touch-icon" href="./felicidad_liquida_icon.png">
+<link rel="manifest" href="./manifest.json">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{background:#060F1A;font-family:'Outfit',system-ui,sans-serif;-webkit-user-select:none;user-select:none;color:#F0F8F8}
+  @keyframes flFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes flScale{from{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  @keyframes flGlow{0%,100%{box-shadow:0 0 15px rgba(0,242,254,.15)}50%{box-shadow:0 0 30px rgba(0,242,254,.35)}}
+  @keyframes waveMotion {
+    0% { transform: translateY(0) scaleY(1); }
+    50% { transform: translateY(-4px) scaleY(1.05); }
+    100% { transform: translateY(0) scaleY(1); }
+  }
+  
+  /* Scrollbar custom style */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+  ::-webkit-scrollbar-thumb { background: rgba(0,242,254,0.15); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0,242,254,0.3); }
+
+  /* Range input stylings */
+  input[type=range]{-webkit-appearance:none;appearance:none;background:transparent}
+  input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:99px;background:rgba(255,255,255,0.08)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#00F2FE;border:2px solid #060F1A;margin-top:-8px;box-shadow:0 0 10px rgba(0,242,254,0.4);cursor:pointer;transition:transform 0.1s}
+  input[type=range]::-webkit-slider-thumb:active{transform:scale(1.2)}
+  input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:rgba(255,255,255,0.08)}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#00F2FE;border:2px solid #060F1A;cursor:pointer}
+</style>
+</helmet>
+
+<div style="background:radial-gradient(circle at 50% 0%, #0C213A 0%, #060F1A 70%);min-height:100vh;display:flex;justify-content:center;padding-bottom:50px">
+<canvas ref="{{ canvasRef }}" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999"></canvas>
+
+<!-- CELEBRATION MODAL -->
+<sc-if value="{{ showCeleb }}">
+  <div style="position:fixed;inset:0;background:rgba(3,8,14,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;animation:flFade .3s ease both">
+    <div style="background:linear-gradient(160deg,#0D1F35,#071221);border:1px solid rgba(0,242,254,0.25);border-radius:28px;padding:32px 24px;max-width:380px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;box-shadow:0 24px 60px rgba(0,0,0,0.7);animation:flScale .38s cubic-bezier(.34,1.56,.64,1) both">
+      
+      <!-- Fallback illustration container -->
+      <div style="width:120px;height:120px;border-radius:24px;overflow:hidden;border:2px solid #00F2FE;animation:flGlow 2.2s infinite ease-in-out;background:#122842;display:flex;align-items:center;justify-content:center">
+        <sc-if value="{{ celebImg }}">
+          <img src="{{ celebImg }}" style="width:100%;height:100%;object-fit:cover" onError="this.style.display='none'; this.nextSibling.style.display='flex';" alt="Celebración">
+          <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:3rem">🌊</div>
+        </sc-if>
+        <sc-if value="{{ celebNoImg }}">
+          <div style="font-size:3rem">🌊</div>
+        </sc-if>
+      </div>
+
+      <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,242,254,0.12);border:1px solid rgba(0,242,254,0.3);color:#00F2FE;padding:6px 18px;border-radius:99px;font-weight:700;font-size:0.95rem">★ {{ celebStreakLabel }} activa</span>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#F0F8F8;line-height:1.2">{{ celebTitle }}</h2>
+      <p style="color:#9FB0C0;font-size:0.92rem;line-height:1.6">{{ celebBody }}</p>
+      
+      <button onClick="{{ onShareCeleb }}" style="background:linear-gradient(135deg,#25d366,#128c7e);border:none;color:#fff;font-family:'Outfit';font-weight:700;font-size:0.92rem;padding:14px;border-radius:14px;cursor:pointer;width:100%;box-shadow:0 6px 20px rgba(37,211,102,0.25);margin-top:5px;transition:transform 0.15s" onMouseOver="this.style.transform='translateY(-2px)'" onMouseOut="this.style.transform='none'">Compartir en WhatsApp 💬</button>
+      <button onClick="{{ onCloseCeleb }}" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#9FB0C0;font-family:'Outfit';font-weight:600;font-size:0.92rem;padding:14px;border-radius:14px;cursor:pointer;width:100%">Continuar la travesía</button>
+    </div>
+  </div>
+</sc-if>
+
+<!-- DAY REGISTER MODAL -->
+<sc-if value="{{ dayOpen }}">
+  <div style="position:fixed;inset:0;background:rgba(3,8,14,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;z-index:10000;padding:0;animation:flFade .25s ease both">
+    <div style="background:linear-gradient(180deg,#0D1F35,#071221);border:1px solid rgba(255,255,255,0.06);border-radius:28px 28px 0 0;padding:24px 20px 30px 20px;max-width:460px;width:100%;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;gap:20px;box-shadow:0 -16px 50px rgba(0,0,0,0.6);animation:flScale .32s cubic-bezier(.34,1.3,.64,1) both">
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#00F2FE;font-weight:700">Bitácora de Mari</span>
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#F0F8F8;line-height:1.1">{{ dayTitle }}</h2>
+        </div>
+        <button onClick="{{ onCloseDay }}" style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#9FB0C0;font-size:1.2rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+
+      <!-- ZUMBA -->
+      <div style="border-radius:18px;border:1px solid rgba(255,255,255,0.05);background:rgba(18,40,66,0.4);padding:16px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="width:10px;height:10px;border-radius:50%;flex-shrink:0;background:{{ zumbaColor }}"></span>
+          <div style="display:flex;flex-direction:column;flex:1;line-height:1.3">
+            <span style="font-size:1rem;font-weight:700;color:#F0F8F8">Entrenamiento de Élite (Zumba) 💃</span>
+            <span style="font-size:0.75rem;color:#9FB0C0">{{ zumbaSubLabel }}</span>
+          </div>
+          <button onClick="{{ onToggleZumba }}" style="{{ zumbaToggleStyle }}">{{ zumbaToggleLabel }}</button>
+        </div>
+      </div>
+
+      <!-- NATACION -->
+      <div style="border-radius:18px;border:1px solid rgba(255,255,255,0.05);background:rgba(18,40,66,0.4);padding:16px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="width:10px;height:10px;border-radius:50%;flex-shrink:0;background:{{ swimColor }}"></span>
+          <div style="display:flex;flex-direction:column;flex:1;line-height:1.3">
+            <span style="font-size:1rem;font-weight:700;color:#F0F8F8">Cruce Transatlántico en Pileta 🥽</span>
+            <span style="font-size:0.75rem;color:#9FB0C0">{{ swimSubLabel }}</span>
+          </div>
+          <button onClick="{{ onToggleSwim }}" style="{{ swimToggleStyle }}">{{ swimToggleLabel }}</button>
+        </div>
+      </div>
+
+      <!-- CAMINATA -->
+      <div style="border-radius:18px;border:1px solid rgba(255,255,255,0.05);background:rgba(18,40,66,0.4);padding:16px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="width:10px;height:10px;border-radius:50%;flex-shrink:0;background:{{ walkColor }}"></span>
+          <div style="display:flex;flex-direction:column;flex:1;line-height:1.3">
+            <span style="font-size:1rem;font-weight:700;color:#F0F8F8">Caminata de Pasos 👣</span>
+            <span style="font-size:0.75rem;color:#9FB0C0">{{ walkSubLabel }}</span>
+          </div>
+          <button onClick="{{ onToggleWalk }}" style="{{ walkToggleStyle }}">{{ walkToggleLabel }}</button>
+        </div>
+
+        <sc-if value="{{ draftWalk }}">
+          <div style="border-radius:14px;border:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.015);padding:14px;display:flex;flex-direction:column;gap:12px;animation:flFade 0.2s ease">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:0.75rem;color:#9FB0C0;font-weight:500">Ajustar cantidad de pasos</span>
+              <span style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#E2BA6E;font-weight:700">{{ draftStepsLabel }} pasos</span>
+            </div>
+            
+            <div style="display:flex;align-items:center;gap:12px">
+              <input type="range" min="500" max="15000" step="500" value="{{ draftSteps }}" onInput="{{ onSetSteps }}" style="flex:1;height:24px">
+            </div>
+
+            <!-- MILENA OPTION -->
+            <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;margin-top:4px">
+              <div style="display:flex;flex-direction:column;line-height:1.25">
+                <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Acompañada por Milena 👶</span>
+                <span style="font-size:0.7rem;color:#9FB0C0">Charla incansable durante el paseo</span>
+              </div>
+              <button onClick="{{ onToggleMilena }}" style="{{ milenaToggleStyle }}">{{ milenaToggleLabel }}</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- ACTIVE ACTIVITY PREVIEW -->
+      <sc-if value="{{ showActiveBanner }}">
+        <div style="display:grid;grid-template-columns:repeat({{ activeBannerImgCount }}, 1fr);gap:10px;width:100%;margin-bottom:10px;animation:flFade 0.2s ease">
+          <!-- Zumba Preview -->
+          <sc-if value="{{ draftZumba }}">
+            {{ zumbaPreviewEl }}
+          </sc-if>
+          <!-- Swim Preview -->
+          <sc-if value="{{ draftSwim }}">
+            {{ swimPreviewEl }}
+          </sc-if>
+          <!-- Walk Preview -->
+          <sc-if value="{{ draftWalk }}">
+            {{ walkPreviewEl }}
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:0.8rem;color:#9FB0C0;text-align:center;line-height:1.4">{{ daySummary }}</span>
+        <button onClick="{{ onSaveDay }}" style="background:linear-gradient(135deg,#00F2FE,#4FACFE);border:none;color:#060F1A;font-family:'Outfit';font-weight:800;font-size:1rem;padding:16px;border-radius:16px;cursor:pointer;width:100%;box-shadow:0 8px 25px rgba(0,242,254,0.25);transition:transform 0.1s" onMouseDown="this.style.transform='scale(0.98)'" onMouseUp="this.style.transform='none'">Sellar travesía de hoy ⚓</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- STATS MODAL -->
+<sc-if value="{{ showStats }}">
+  <div style="position:fixed;inset:0;background:rgba(3,8,14,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;z-index:10000;padding:0;animation:flFade .25s ease both">
+    <div style="background:linear-gradient(180deg,#0D1F35,#071221);border:1px solid rgba(255,255,255,0.06);border-radius:28px 28px 0 0;padding:24px 20px 30px 20px;max-width:460px;width:100%;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;gap:20px;box-shadow:0 -16px 50px rgba(0,0,0,0.6);animation:flScale .32s cubic-bezier(.34,1.3,.64,1) both">
+      
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#00F2FE;font-weight:700">Bitácora mensual</span>
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#F0F8F8;line-height:1.1">Bitácora de Navegación</h2>
+        </div>
+        <button onClick="{{ onCloseStats }}" style="flex-shrink:0;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#9FB0C0;font-size:1.2rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+
+      <!-- IMAGE OR FALLBACK -->
+      {{ statsHeaderEl }}
+
+      <!-- DIQUEMETRO DE RIO CEBALLOS -->
+      <div style="background:rgba(0,242,254,0.04);border:1px solid rgba(0,242,254,0.15);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;margin-top:5px">
+        <div style="display:flex;justify-content:space-between;align-items:center;line-height:1.2">
+          <div style="display:flex;flex-direction:column">
+            <span style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#00F2FE;font-weight:700">Estado del Embalse</span>
+            <span style="font-size:0.95rem;font-weight:800;color:#F0F8F8;margin-top:2px">Dique La Quebrada</span>
+          </div>
+          <span style="font-family:'Playfair Display',serif;font-size:1.15rem;color:#00F2FE;font-weight:700">{{ diquePercent }}%</span>
+        </div>
+        
+        <!-- Progress bar -->
+        <div style="position:relative;width:100%;height:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:9px;overflow:hidden">
+          <div style="width:{{ diquePercent }}%;height:100%;background:linear-gradient(90deg,#00F2FE,#4FACFE);border-radius:9px;transition:width 0.5s ease-out;box-shadow:0 0 10px rgba(0,242,254,0.4)"></div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:3px;line-height:1.3">
+          <span style="font-size:0.8rem;font-weight:700;color:#00F2FE">Nivel: {{ diqueLabel }}</span>
+          <span style="font-size:0.72rem;color:#9FB0C0">{{ diqueDesc }}</span>
+        </div>
+      </div>
+
+      <!-- STATS COUNTERS -->
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:5px">
+        
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
+          <div style="display:flex;flex-direction:column">
+            <span style="font-size:0.9rem;font-weight:700">Entrenamiento de Élite (Zumba)</span>
+            <span style="font-size:0.72rem;color:#9FB0C0">Sesiones a puro ritmo</span>
+          </div>
+          <span style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#FF6B6B;font-weight:700">{{ statsZumba }}</span>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
+          <div style="display:flex;flex-direction:column">
+            <span style="font-size:0.9rem;font-weight:700">Cruce Transatlántico en Pileta</span>
+            <span style="font-size:0.72rem;color:#9FB0C0">Sesiones acuáticas</span>
+          </div>
+          <span style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#00F2FE;font-weight:700">{{ statsSwim }}</span>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
+          <div style="display:flex;flex-direction:column">
+            <span style="font-size:0.9rem;font-weight:700">Pasos totales caminados</span>
+            <span style="font-size:0.72rem;color:#9FB0C0">Acumulado en sendas</span>
+          </div>
+          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#E2BA6E;font-weight:700">{{ statsStepsLabel }}</span>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
+          <div style="display:flex;flex-direction:column">
+            <span style="font-size:0.9rem;font-weight:700">Paseos acompañada por Milena</span>
+            <span style="font-size:0.72rem;color:#9FB0C0">Pasos compartidos: {{ statsMilenaStepsLabel }}</span>
+          </div>
+          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#FF75B5;font-weight:700;white-space:nowrap">{{ statsMilenaWalks }}</span>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
+          <div style="display:flex;flex-direction:column">
+            <span style="font-size:0.9rem;font-weight:700">Monólogos de Milena 💬</span>
+            <span style="font-size:0.72rem;color:#9FB0C0">Palabras estimadas pronunciadas</span>
+          </div>
+          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#FF75B5;font-weight:700;white-space:nowrap">{{ statsMilenaWords }}</span>
+        </div>
+
+      </div>
+
+      <button onClick="{{ onCloseStats }}" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#9FB0C0;font-family:'Outfit';font-weight:600;font-size:0.92rem;padding:14px;border-radius:14px;cursor:pointer;width:100%">Cerrar bitácora</button>
+    </div>
+  </div>
+</sc-if>
+
+<!-- MILENA MAGIC CARD MODAL -->
+<sc-if value="{{ showMilenaModal }}">
+  <div style="position:fixed;inset:0;background:rgba(3,8,14,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;animation:flFade .3s ease both">
+    <div style="background:linear-gradient(160deg,#1C1021,#0A050D);border:2px solid #FF75B5;border-radius:24px;padding:20px;max-width:360px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 0 30px rgba(255,117,181,0.25);animation:flScale .35s cubic-bezier(.34,1.56,.64,1) both;color:#F0F8F8">
+      
+      <!-- Card Header -->
+      <div style="width:100%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,117,181,0.3);padding-bottom:8px">
+        <div style="text-align:left">
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.45rem;color:#FF75B5;font-weight:700">Milena</h2>
+          <span style="font-size:0.68rem;color:#9FB0C0;text-transform:uppercase;font-weight:700;letter-spacing:0.05em">Copiloto de Expedición Marina ⚓</span>
+        </div>
+        <span style="font-size:1.2rem">👶</span>
+      </div>
+
+      <!-- Card Image -->
+      <div style="position:relative;width:100%;padding-bottom:75%;height:0;border-radius:14px;overflow:hidden;border:1px solid rgba(255,117,181,0.2);background:#23152B">
+        <img src="assets/mari_milena_avatar.png" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block" onError="this.style.display='none'; this.nextSibling.style.display='flex';" />
+        <div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:3rem;background:linear-gradient(135deg,#23152B,#120B16)">👶</div>
+      </div>
+
+      <!-- Card Stats Grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;gap:1px;background:rgba(255,117,181,0.2);border:1px solid rgba(255,117,181,0.2);border-radius:12px;overflow:hidden;font-size:0.75rem">
+        <div style="background:#130A17;padding:8px;display:flex;flex-direction:column;align-items:center">
+          <span style="color:#9FB0C0;text-transform:uppercase;font-size:0.6rem;font-weight:700;letter-spacing:0.04em">Edad</span>
+          <span style="font-weight:700;color:#F0F8F8;font-size:0.88rem;margin-top:2px">3 años, casi</span>
+        </div>
+        <div style="background:#130A17;padding:8px;display:flex;flex-direction:column;align-items:center">
+          <span style="color:#9FB0C0;text-transform:uppercase;font-size:0.6rem;font-weight:700;letter-spacing:0.04em">Temperamento</span>
+          <span style="font-weight:700;color:#FF75B5;font-size:0.88rem;margin-top:2px">Humor de papá 🎭</span>
+        </div>
+        <div style="background:#130A17;padding:8px;display:flex;flex-direction:column;align-items:center;min-width:0">
+          <span style="color:#9FB0C0;text-transform:uppercase;font-size:0.6rem;font-weight:700;letter-spacing:0.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center">Palabras Habladas</span>
+          <span style="font-weight:700;color:#00F2FE;font-size:0.88rem;margin-top:2px;white-space:nowrap">{{ statsMilenaWords }} 💬</span>
+        </div>
+        <div style="background:#130A17;padding:8px;display:flex;flex-direction:column;align-items:center">
+          <span style="color:#9FB0C0;text-transform:uppercase;font-size:0.6rem;font-weight:700;letter-spacing:0.04em">Paseos Acompañados</span>
+          <span style="font-weight:700;color:#E2BA6E;font-size:0.88rem;margin-top:2px">{{ statsMilenaWalks }}</span>
+        </div>
+      </div>
+
+      <!-- Card Description / Lore -->
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,117,181,0.1);border-radius:12px;padding:10px 12px;text-align:left;width:100%">
+        <p style="font-size:0.76rem;line-height:1.45;color:#D8C7DE;font-style:italic">
+          <strong>Habilidad Especial: Charla Hipnótica.</strong> Posee una increíble capacidad para hablar sin tomar aire. Cuando Milena comanda la expedición, Mari entra en un estado de trance activo que le permite caminar miles de pasos extra sin darse cuenta.
+        </p>
+      </div>
+
+      <button onClick="{{ onCloseMilenaModal }}" style="background:rgba(255,117,181,0.15);border:1px solid rgba(255,117,181,0.4);color:#FF75B5;font-family:'Outfit';font-weight:700;font-size:0.9rem;padding:12px;border-radius:14px;cursor:pointer;width:100%;margin-top:4px">Cerrar Carta ✕</button>
+    </div>
+  </div>
+</sc-if>
+
+<!-- SETTINGS MODAL -->
+<sc-if value="{{ showSettingsModal }}">
+  <div style="position:fixed;inset:0;background:rgba(3,8,14,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;animation:flFade .3s ease both">
+    <div style="background:linear-gradient(160deg,#0D1F35,#071221);border:1px solid rgba(0,242,254,0.25);border-radius:28px;padding:24px;max-width:380px;width:100%;display:flex;flex-direction:column;gap:20px;box-shadow:0 24px 60px rgba(0,0,0,0.7);animation:flScale .35s cubic-bezier(.34,1.56,.64,1) both;color:#F0F8F8">
+      
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,242,254,0.2);padding-bottom:10px">
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.45rem;color:#00F2FE;font-weight:700">Ajustes de Travesía ⚙️</h2>
+        <button onClick="{{ onCloseSettingsModal }}" style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#9FB0C0;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
+      </div>
+
+      <!-- Setting 1: Min steps -->
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:0.88rem;font-weight:600">Pasos mínimos (Caminata)</span>
+          <span style="font-family:'Playfair Display',serif;font-size:1.15rem;color:#E2BA6E;font-weight:700">{{ draftMinStepsLabel }} pasos</span>
+        </div>
+        <input type="range" min="500" max="10000" step="500" value="{{ draftMinSteps }}" onInput="{{ onSetMinSteps }}" style="width:100%;height:20px">
+        <span style="font-size:0.7rem;color:#9FB0C0">Caminatas con menos pasos no computarán para la racha semanal.</span>
+      </div>
+
+      <!-- Setting 2: Req days per week -->
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:0.88rem;font-weight:600">Días activos requeridos</span>
+          <span style="font-family:'Playfair Display',serif;font-size:1.15rem;color:#00F2FE;font-weight:700">{{ draftReqDays }} días</span>
+        </div>
+        <input type="range" min="1" max="7" step="1" value="{{ draftReqDays }}" onInput="{{ onSetReqDays }}" style="width:100%;height:20px">
+        <span style="font-size:0.7rem;color:#9FB0C0">Meta de días activos a la semana para mantener la racha.</span>
+      </div>
+
+      <!-- Setting 3: SFX enabled checkbox -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,242,254,0.15);border-radius:12px">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Efectos de sonido 🫧</span>
+          <span style="font-size:0.7rem;color:#9FB0C0">Sonidos al interactuar y registrar</span>
+        </div>
+        <input type="checkbox" checked="{{ draftSfxEnabled }}" onChange="{{ onToggleDraftSfx }}" style="width:18px;height:18px;cursor:pointer">
+      </div>
+
+      <button onClick="{{ onSaveSettings }}" style="background:linear-gradient(135deg,#00F2FE,#4FACFE);border:none;color:#060F1A;font-family:'Outfit';font-weight:800;font-size:0.95rem;padding:14px;border-radius:14px;cursor:pointer;width:100%;box-shadow:0 6px 18px rgba(0,242,254,0.2)">Guardar Ajustes ⚓</button>
+    </div>
+  </div>
+</sc-if>
+
+<!-- MAIN CONTAINER -->
+<div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:14px;padding:20px 16px 90px 16px">
+
+  <!-- HEADER -->
+  <header style="display:flex;align-items:center;gap:13px;padding:4px 2px">
+       <!-- Clickable Avatar -->
+       <div onClick="{{ onOpenSettingsModal }}" style="width:48px;height:48px;border-radius:50%;border:2px solid #00F2FE;background:#122842;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.3);cursor:pointer;transition:transform 0.15s" onMouseOver="this.style.transform='scale(1.05)'" onMouseOut="this.style.transform='scale(1)'" title="Ajustes de la Bitácora">
+         <img src="assets/mari_milena_avatar.png" style="width:100%;height:100%;object-fit:cover" onError="this.style.display='none'; this.nextSibling.style.display='flex';" alt="Mari & Milena">
+         <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:0.9rem;font-weight:800;color:#00F2FE;background:linear-gradient(135deg,#0B1B2F,#122842)">M&M</div>
+       </div>
+    <div style="display:flex;flex-direction:column;line-height:1.1">
+      <span style="font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:#F0F8F8">Felicidad Líquida</span>
+      <span style="font-size:0.64rem;letter-spacing:0.18em;text-transform:uppercase;color:#9FB0C0;font-weight:600;margin-top:2px">La felicidad es líquida</span>
+    </div>
+    <button onClick="{{ onToggleSound }}" style="margin-left:auto;background:rgba(0,242,254,0.08);border:1px solid rgba(0,242,254,0.22);border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#00F2FE;transition:transform 0.15s;flex-shrink:0;margin-right:8px" onMouseOver="this.style.transform='scale(1.08)'" onMouseOut="this.style.transform='none'" title="Sonido de Olas">
+      {{ soundIcon }}
+    </button>
+    <div style="display:flex;align-items:center;gap:7px;background:rgba(0,242,254,0.06);border:1px solid rgba(0,242,254,0.22);padding:6px 12px;border-radius:999px;flex-shrink:0">
+      <span style="width:7px;height:7px;border-radius:50%;background:#00F2FE;box-shadow:0 0 8px rgba(0,242,254,0.8)"></span>
+      <span style="font-size:0.95rem;font-weight:800;color:#00F2FE">{{ streak }}</span>
+      <span style="font-size:0.7rem;color:#7FBEE5;letter-spacing:0.04em">{{ streakUnit }}</span>
+    </div>
+  </header>
+
+  <!-- TODAY CARD -->
+  <div style="position:relative;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(160deg,#0D223B 0%,#081424 60%,#040A12 100%);padding:22px 20px;box-shadow:0 18px 40px rgba(0,0,0,0.5)">
+    <img src="assets/felicidad_liquida_logo.png" style="position:absolute;top:-10px;right:-10px;width:115px;height:115px;opacity:0.15;pointer-events:none;transform:rotate(12deg);object-fit:contain" alt="Felicidad Líquida Logo">
+    
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span style="font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#00F2FE;font-weight:700">Bitácora Marina · Hoy</span>
+      <span style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.3)"></span>
+      <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#9FB0C0;font-weight:600">{{ todayDow }}</span>
+    </div>
+    
+    <h1 style="font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:700;line-height:1.2;color:#F0F8F8">{{ todayHeadline }}</h1>
+    <p style="font-size:0.88rem;line-height:1.5;color:#9FB0C0;margin-top:8px;max-width:340px">{{ todaySummary }}</p>
+    
+    <button onClick="{{ onRegisterToday }}" style="margin-top:18px;background:linear-gradient(135deg,#00F2FE,#4FACFE);border:none;color:#060F1A;font-family:'Outfit';font-weight:800;font-size:0.95rem;padding:14px;border-radius:14px;cursor:pointer;width:100%;box-shadow:0 6px 18px rgba(0,242,254,0.2);transition:transform 0.1s" onMouseDown="this.style.transform='scale(0.98)'" onMouseUp="this.style.transform='none'">{{ registerTodayLabel }}</button>
+  </div>
+
+  <!-- CALENDAR -->
+  <div style="border-radius:24px;border:1px solid rgba(255,255,255,0.05);background:rgba(11,27,47,0.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:18px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <button onClick="{{ onPrevMonth }}" style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#F0F8F8;font-size:1.1rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center">‹</button>
+      <span style="font-family:'Playfair Display',serif;font-size:1.25rem;color:#F0F8F8;font-weight:700">{{ monthLabel }}</span>
+      <button onClick="{{ onNextMonth }}" style="{{ nextMonthStyle }}">›</button>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px">
+      <sc-for list="{{ dowHeaders }}" as="h" hint-placeholder-count="7">
+        <span style="text-align:center;font-size:0.68rem;font-weight:700;color:#6C849B;text-transform:uppercase;letter-spacing:0.05em">{{ h }}</span>
+      </sc-for>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+      <sc-for list="{{ cells }}" as="c" hint-placeholder-count="35">
+        <button onClick="{{ c.onClick }}" title="{{ c.title }}" style="{{ c.style }}">
+          <span style="position:relative;z-index:2">{{ c.num }}</span>
+          <sc-for list="{{ c.icons }}" as="ico" hint-placeholder-count="0">{{ ico.el }}</sc-for>
+        </button>
+      </sc-for>
+    </div>
+    
+    <!-- LEGEND -->
+    <div style="display:flex;flex-wrap:wrap;gap:12px 16px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05)">
+      <span style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#9FB0C0"><span style="width:11px;height:11px;border-radius:3px;background:rgba(0,242,254,0.15);border:1px solid rgba(0,242,254,0.3)"></span>Día Activo</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:0.72rem;color:#9FB0C0">🥽 Natación</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:0.72rem;color:#9FB0C0">💃 Zumba</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:0.72rem;color:#9FB0C0">👣 Caminata</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:0.72rem;color:#9FB0C0">👶 Milena</span>
+    </div>
+  </div>
+
+  <!-- BITACORA DE NAVEGACION TRIGGER BUTTON -->
+  <button onClick="{{ onOpenStats }}" style="background:rgba(11,27,47,0.55);border:1px solid rgba(0,242,254,0.22);color:#00F2FE;font-family:'Outfit';font-size:0.9rem;font-weight:700;padding:14px;border-radius:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 15px rgba(0,0,0,0.15)">Consultar Bitácora Mensual 📋</button>
+
+  <!-- EL RINCON DE MILENA -->
+  <div onClick="{{ onOpenMilenaModal }}" style="border-radius:24px;border:1px solid rgba(255,255,255,0.05);background:rgba(11,27,47,0.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:18px;cursor:pointer;transition:all 0.2s" onMouseOver="this.style.background='rgba(18,40,66,0.5)'; this.style.transform='translateY(-2px)';" onMouseOut="this.style.background='rgba(11,27,47,0.55)'; this.style.transform='none';" title="Ver carta Magic de Milena">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <span style="font-family:'Outfit';font-weight:800;font-size:1rem;color:#F0F8F8">El Rincón de Milena</span>
+      <span style="font-size:0.72rem;color:#FF75B5;font-weight:700">Copiloto (Ver Carta 📑)</span>
+    </div>
+    
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+      <!-- Milena avatar fallback -->
+      <div style="width:64px;height:64px;border-radius:50%;overflow:hidden;border:2px solid #FF75B5;background:#1F1826;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <img src="assets/mari_milena_avatar.png" style="width:100%;height:100%;object-fit:cover" onError="this.style.display='none'; this.nextSibling.style.display='flex';" alt="Milena">
+        <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.6rem">👶</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <span style="font-size:0.95rem;font-weight:700;color:#F0F8F8">Milena</span>
+        <span style="font-size:0.75rem;color:#9FB0C0">3 años, casi · Heredó el humor de su papá 🎭</span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <p style="font-size:0.82rem;line-height:1.55;color:#9FB0C0;margin-bottom:14px">
+      Muy parecida físicamente a su mamá, aunque de temperamento e ironía heredó el humor de su papá. Al igual que Mari, habla de manera incansable. Hay rumores en el barrio de que Mari tiene dos pares de pulmones: un par para funcionar y un par para charlar. Milena heredó el mismo equipamiento de fábrica.
+    </p>
+
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:10px;text-align:center">
+        <span style="font-size:0.68rem;color:#9FB0C0;text-transform:uppercase;font-weight:700;letter-spacing:0.04em">Paseos Acompañados</span>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#FF75B5;font-weight:700;margin-top:2px">{{ statsMilenaWalks }} veces</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:10px;text-align:center">
+        <span style="font-size:0.68rem;color:#9FB0C0;text-transform:uppercase;font-weight:700;letter-spacing:0.04em">Charla Estimada</span>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#FF75B5;font-weight:700;margin-top:2px" title="Estimado: ~300 palabras por cada 1000 pasos">{{ statsMilenaWords }} palabras</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORACULO -->
+  <div onClick="{{ onRotatePrecept }}" style="border-radius:20px;border:1px solid rgba(0,242,254,0.18);background:rgba(11,27,47,0.55);padding:16px 18px;display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:background 0.15s ease" onMouseOver="this.style.background='rgba(18,40,66,0.5)'" onMouseOut="this.style.background='rgba(11,27,47,0.55)'" title="Consultar oráculo">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:9px">
+        <span style="font-family:'Playfair Display',serif;font-size:1.25rem;color:#00F2FE">§</span>
+        <span style="font-family:'Outfit';font-weight:800;font-size:0.95rem;color:#00F2FE;letter-spacing:0.02em">El Oráculo de la Felicidad Líquida</span>
+      </div>
+      <span style="font-size:0.68rem;color:#9FB0C0;text-transform:uppercase;letter-spacing:0.05em;display:inline-flex;align-items:center;gap:4px">
+        Girar Timón ⟳
+      </span>
+    </div>
+    <p style="font-size:0.84rem;color:#9FB0C0;line-height:1.6;transition:opacity 0.2s;opacity:{{ preceptFade ? 0 : 1 }}">
+      <strong style="color:#F0F8F8;font-weight:700">{{ activePreceptTitle }}.</strong> {{ activePreceptText }}
+    </p>
+  </div>
+
+  <!-- CONTROL BUTTONS -->
+  <button onClick="{{ onReset }}" style="background:transparent;border:1px solid rgba(255,107,107,0.25);color:rgba(255,107,107,0.8);border-radius:14px;padding:12px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Outfit';margin-top:10px;transition:all 0.2s" onMouseOver="this.style.background='rgba(255,107,107,0.05)'" onMouseOut="this.style.background='transparent'">Vaciar Bitácora Completa 🗑️</button>
+  <button onClick="{{ onForceUpdate }}" style="background:transparent;border:1px solid rgba(255,255,255,0.05);color:#6C849B;border-radius:14px;padding:12px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'Outfit'">Actualizar aplicación ⟲</button>
+
+</div>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:440,&quot;height&quot;:920}}">
+class OceanNoise {
+  constructor() {
+    this.ctx = null;
+    this.source = null;
+    this.gain = null;
+    this.filter = null;
+    this.lfoInterval = null;
+  }
+  start() {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      this.ctx = new AudioContext();
+      
+      const bufferSize = 2 * this.ctx.sampleRate;
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      
+      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        b0 = 0.99886 * b0 + white * 0.0555179;
+        b1 = 0.99332 * b1 + white * 0.0750759;
+        b2 = 0.96900 * b2 + white * 0.1538520;
+        b3 = 0.86650 * b3 + white * 0.3104856;
+        b4 = 0.55000 * b4 + white * 0.5329522;
+        b5 = -0.7616 * b5 - white * 0.0168980;
+        output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+        output[i] *= 0.11;
+        b6 = white * 0.115926;
+      }
+      
+      this.source = this.ctx.createBufferSource();
+      this.source.buffer = noiseBuffer;
+      this.source.loop = true;
+      
+      this.filter = this.ctx.createBiquadFilter();
+      this.filter.type = 'lowpass';
+      this.filter.Q.value = 1;
+      
+      this.gain = this.ctx.createGain();
+      this.gain.gain.value = 0.35;
+      
+      this.source.connect(this.filter);
+      this.filter.connect(this.gain);
+      this.gain.connect(this.ctx.destination);
+      
+      this.source.start(0);
+      
+      this.lfoInterval = setInterval(() => {
+        if (!this.ctx || this.ctx.state === 'suspended') return;
+        const time = this.ctx.currentTime;
+        const freq = 380 + 180 * Math.sin(time * 0.65);
+        if (this.filter && this.filter.frequency) {
+          this.filter.frequency.setValueAtTime(freq, time);
+        }
+      }, 100);
+    } catch (e) {
+      console.warn("Could not start ocean synthesizer:", e);
+    }
+  }
+  stop() {
+    if (this.lfoInterval) { clearInterval(this.lfoInterval); this.lfoInterval = null; }
+    if (this.source) {
+      try { this.source.stop(); } catch(e){}
+      this.source = null;
+    }
+    if (this.ctx) {
+      try { this.ctx.close(); } catch(e){}
+      this.ctx = null;
+    }
+  }
+}
+
+const SafeImage = ({ src, alt, fallbackEmoji, bgGrad }) => {
+  const [failed, setFailed] = React.useState(false);
+  if (failed) {
+    return React.createElement('div', {
+      style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.2rem', background: bgGrad, color: '#fff', textAlign: 'center', padding: '10px', boxSizing: 'border-box' }
+    }, fallbackEmoji);
+  }
+  return React.createElement('img', {
+    src: src,
+    alt: alt,
+    style: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' },
+    onError: () => setFailed(true)
+  });
+};
+
+class Component extends DCLogic {
+  canvasRef = React.createRef();
+  dows = ["L","M","M","J","V","S","D"];
+  monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  dows_long = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+
+  precepts = [
+    {
+      title: "El Teorema de la Nutria",
+      text: "El agua templada no es para cualquiera, pero un cruce transatlántico de 40 minutos en la pileta purifica cualquier dilema existencial."
+    },
+    {
+      title: "La Parábola de los Dos Pulmones",
+      text: "Si Mari puede hablar durante tres kilómetros sin tomar aire, vos podés entrenar 30 minutos sin quejarte."
+    },
+    {
+      title: "El Dogma del Zumba Olímpico",
+      text: "Que los puristas lo llamen baile; nosotras sabemos que coordinar esos pasos a ritmo caribeño es entrenamiento de élite."
+    },
+    {
+      title: "La Sentencia de Milena",
+      text: "La vida no se camina, se comanda. La copiloto de tres años, casi, no viene a pasear; viene a dirigir la expedición y a dictar decretos a paso firme."
+    },
+    {
+      title: "El Axioma de la Vara Baja",
+      text: "El secreto de la felicidad es tener la vara baja. Si hoy tu única meta es levantarte y flotar, entonces la jornada ya es un éxito rotundo."
+    },
+    {
+      title: "El Axioma del Estrecho",
+      text: "Nadar de punta a punta no te dará un título de capitana de navío, pero te oxigena el cerebro lo suficiente para ganar cualquier debate familiar."
+    },
+    {
+      title: "La Doctrina del Zumba de Élite",
+      text: "Un paso en falso en la coreografía es solo una variante artística del entrenamiento."
+    },
+    {
+      title: "La Ley del Copiloto",
+      text: "Caminar sola es meditar; caminar con Milena es recibir un monólogo de tres años, casi, sobre cualquier cosa que le llame la atención."
+    },
+    {
+      title: "La Máxima de la Humedad",
+      text: "El sudor en zumba y el esfuerzo en la pileta son las dos caras de la felicidad líquida. Y por favor, ¡que el agua esté libre de cloro!"
+    },
+    {
+      title: "El Precepto de Río Ceballos",
+      text: "La felicidad plena es como el dique de Río Ceballos cuando está alto: una maravilla desbordante pero inestable. Disfrutá el agua mientras el embalse esté lleno."
+    },
+    {
+      title: "El Canon del Ancla",
+      text: "No dejes que la pereza eche raíces en el fondo del mar. La racha de la semana se sostiene paso a paso."
+    },
+    {
+      title: "La Regla del Mar Calmo",
+      text: "Tres días de actividad a la semana mantienen el barco a flote, sin importar cuán picada esté la marea."
+    }
+  ];
+
+  // Helper to compile icons in specific positions in the calendar cell
+  iconEl(emoji, corner) {
+    const pos = {
+      tl: { top: '3px', left: '3px' },
+      tr: { top: '3px', right: '3px' },
+      bl: { bottom: '3px', left: '3px' },
+      br: { bottom: '3px', right: '3px' }
+    }[corner];
+    
+    return React.createElement('span', {
+      style: {
+        position: 'absolute',
+        pointerEvents: 'none',
+        zIndex: 3,
+        fontSize: '0.62rem',
+        ...pos
+      }
+    }, emoji);
+  }
+
+  fmt(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+  
+  load(k, f) {
+    try {
+      const v = JSON.parse(localStorage.getItem(k));
+      return v == null ? f : v;
+    } catch(e) {
+      return f;
+    }
+  }
+
+  ocean = null;
+
+  constructor(props) {
+    super(props);
+    const t = new Date();
+    this.state = {
+      log: this.load('fl_log', {}),
+      settings: this.load('fl_settings', { minSteps: 500, reqDaysPerWeek: 3, soundEnabled: false, sfxEnabled: true }),
+      viewYear: t.getFullYear(),
+      viewMonth: t.getMonth(),
+      openDay: null,
+      draft: null,
+      showCeleb: false,
+      celeb: null,
+      showStats: false,
+      showMilenaModal: false,
+      showSettingsModal: false,
+      draftMinSteps: 500,
+      draftReqDays: 3,
+      draftSfxEnabled: true,
+      preceptIdx: t.getDate() % 12,
+      preceptFade: false
+    };
+    this.ocean = null;
+  }
+
+  persist() {
+    localStorage.setItem('fl_log', JSON.stringify(this.state.log));
+  }
+
+  // --- Core logic helper ---
+  didSomething(e) {
+    if (!e) return false;
+    const minSteps = this.state.settings ? this.state.settings.minSteps : 500;
+    return !!e && (e.zumba || e.swim || (e.walkSteps && e.walkSteps >= minSteps));
+  }
+
+  // Monday-Sunday week key (as 'YYYY-MM-DD' date of the Monday)
+  getWeekKey(dateStr) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const dt = new Date(y, m - 1, d);
+    const day = dt.getDay();
+    const diff = dt.getDate() - day + (day === 0 ? -6 : 1);
+    const monday = new Date(dt.setDate(diff));
+    return `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+  }
+
+  // Helper to count active days in a specific Monday-starting week (at most 1 active day per day)
+  countActiveDaysInWeek(mondayStr, log) {
+    const [y, m, d] = mondayStr.split('-').map(Number);
+    const start = new Date(y, m - 1, d);
+    let count = 0;
+    for (let i = 0; i < 7; i++) {
+      const temp = new Date(start);
+      temp.setDate(start.getDate() + i);
+      const dayStr = this.fmt(temp);
+      if (this.didSomething(log[dayStr])) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  calcStreak(log) {
+    const today = new Date();
+    const currentWeekKey = this.getWeekKey(this.fmt(today));
+    const currentActive = this.countActiveDaysInWeek(currentWeekKey, log);
+    const reqDays = this.state.settings ? this.state.settings.reqDaysPerWeek : 3;
+    
+    let startWeekKey;
+    if (currentActive >= reqDays) {
+      startWeekKey = currentWeekKey;
+    } else {
+      // Check previous week
+      const prevWeekDate = new Date(today);
+      prevWeekDate.setDate(today.getDate() - 7);
+      const prevWeekKey = this.getWeekKey(this.fmt(prevWeekDate));
+      const prevActive = this.countActiveDaysInWeek(prevWeekKey, log);
+      if (prevActive >= reqDays) {
+        startWeekKey = prevWeekKey;
+      } else {
+        return 0; // Streak broken
+      }
+    }
+    
+    // Loop backwards and sum consecutive weeks
+    let streak = 0;
+    let loopKey = startWeekKey;
+    let maxSafety = 520; // 10 years limit
+    while (maxSafety-- > 0) {
+      const activeDays = this.countActiveDaysInWeek(loopKey, log);
+      if (activeDays >= reqDays) {
+        streak++;
+        // Go back 7 days
+        const [y, m, d] = loopKey.split('-').map(Number);
+        const loopDate = new Date(y, m - 1, d);
+        loopDate.setDate(loopDate.getDate() - 7);
+        loopKey = this.getWeekKey(this.fmt(loopDate));
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
+
+  // --- Navigation ---
+  prevMonth() {
+    this.setState(p => {
+      let m = p.viewMonth - 1, y = p.viewYear;
+      if (m < 0) { m = 11; y--; }
+      return { viewMonth: m, viewYear: y };
+    });
+  }
+
+  nextMonth() {
+    const t = new Date();
+    this.setState(p => {
+      if (p.viewYear > t.getFullYear() || (p.viewYear === t.getFullYear() && p.viewMonth >= t.getMonth())) return null;
+      let m = p.viewMonth + 1, y = p.viewYear;
+      if (m > 11) { m = 0; y++; }
+      return { viewMonth: m, viewYear: y };
+    });
+  }
+
+  // --- Day Modal Operations ---
+  playSFX(type) {
+    if (this.state.settings && this.state.settings.sfxEnabled === false) return;
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      
+      if (type === 'bubble') {
+        const now = ctx.currentTime;
+        
+        // Detuned double bubble pop
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(180, now);
+        osc1.frequency.exponentialRampToValueAtTime(1300, now + 0.14);
+        gain1.gain.setValueAtTime(0.08, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.15);
+        
+        setTimeout(() => {
+          try {
+            const ctx2 = new AudioContext();
+            const osc2 = ctx2.createOscillator();
+            const gain2 = ctx2.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(240, ctx2.currentTime);
+            osc2.frequency.exponentialRampToValueAtTime(1600, ctx2.currentTime + 0.1);
+            gain2.gain.setValueAtTime(0.04, ctx2.currentTime);
+            gain2.gain.exponentialRampToValueAtTime(0.001, ctx2.currentTime + 0.1);
+            osc2.connect(gain2);
+            gain2.connect(ctx2.destination);
+            osc2.start(ctx2.currentTime);
+            osc2.stop(ctx2.currentTime + 0.11);
+          } catch(e){}
+        }, 15);
+      } else if (type === 'splash') {
+        const now = ctx.currentTime;
+        
+        // Low triangle water impact
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(45, now + 0.3);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.31);
+        
+        // Bandpass noise spray
+        try {
+          const bufferSize = ctx.sampleRate * 0.18;
+          const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+          }
+          const noiseSource = ctx.createBufferSource();
+          noiseSource.buffer = noiseBuffer;
+          
+          const noiseFilter = ctx.createBiquadFilter();
+          noiseFilter.type = 'bandpass';
+          noiseFilter.frequency.value = 1000;
+          noiseFilter.Q.value = 2;
+          
+          const noiseGain = ctx.createGain();
+          noiseGain.gain.setValueAtTime(0.08, now);
+          noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          
+          noiseSource.connect(noiseFilter);
+          noiseFilter.connect(noiseGain);
+          noiseGain.connect(ctx.destination);
+          noiseSource.start(now);
+          noiseSource.stop(now + 0.19);
+        } catch(e){}
+        
+        // Water droplets plops
+        const droplets = [
+          { delay: 80, freq: 850, dur: 0.1 },
+          { delay: 140, freq: 1100, dur: 0.08 },
+          { delay: 220, freq: 950, dur: 0.12 }
+        ];
+        droplets.forEach(d => {
+          setTimeout(() => {
+            try {
+              const ctx2 = new AudioContext();
+              const osc2 = ctx2.createOscillator();
+              const gain2 = ctx2.createGain();
+              osc2.type = 'sine';
+              osc2.frequency.setValueAtTime(d.freq, ctx2.currentTime);
+              osc2.frequency.exponentialRampToValueAtTime(d.freq * 0.7, ctx2.currentTime + d.dur);
+              gain2.gain.setValueAtTime(0.06, ctx2.currentTime);
+              gain2.gain.exponentialRampToValueAtTime(0.001, ctx2.currentTime + d.dur);
+              osc2.connect(gain2);
+              gain2.connect(ctx2.destination);
+              osc2.start(ctx2.currentTime);
+              osc2.stop(ctx2.currentTime + d.dur + 0.01);
+            } catch(e){}
+          }, d.delay);
+        });
+      } else if (type === 'fanfare') {
+        const notes = [261.63, 329.63, 392.00, 493.88, 523.25, 659.25, 783.99, 987.77, 1046.50];
+        notes.forEach((freq, idx) => {
+          setTimeout(() => {
+            try {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              const filter = ctx.createBiquadFilter();
+              
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(freq, ctx.currentTime);
+              osc.frequency.linearRampToValueAtTime(freq * 1.02, ctx.currentTime + 0.4);
+              
+              filter.type = 'lowpass';
+              filter.frequency.setValueAtTime(2000, ctx.currentTime);
+              filter.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.4);
+              
+              gain.gain.setValueAtTime(0.08, ctx.currentTime);
+              gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+              
+              osc.connect(filter);
+              filter.connect(gain);
+              gain.connect(ctx.destination);
+              
+              osc.start(ctx.currentTime);
+              osc.stop(ctx.currentTime + 0.41);
+            } catch(e){}
+          }, idx * 60);
+        });
+      }
+    } catch(e) {
+      console.warn("Could not play sound effect:", e);
+    }
+  }
+
+  // --- Day Modal Operations ---
+  openDayModal(ds) {
+    this.playSFX('bubble');
+    const e = this.state.log[ds];
+    const draft = e
+      ? { zumba: !!e.zumba, swim: !!e.swim, walk: (e.walkSteps && e.walkSteps > 0), walkSteps: e.walkSteps || 5000, milenaJoined: !!e.milenaJoined }
+      : { zumba: false, swim: false, walk: false, walkSteps: 5000, milenaJoined: false };
+    this.setState({ openDay: ds, draft });
+  }
+
+  closeDay() {
+    this.playSFX('bubble');
+    this.setState({ openDay: null, draft: null });
+  }
+
+  toggleZumba() {
+    this.playSFX('bubble');
+    this.setState(p => {
+      const d = { ...p.draft };
+      d.zumba = !d.zumba;
+      return { draft: d };
+    });
+  }
+
+  toggleSwim() {
+    this.playSFX('bubble');
+    this.setState(p => {
+      const d = { ...p.draft };
+      d.swim = !d.swim;
+      return { draft: d };
+    });
+  }
+
+  toggleWalk() {
+    this.playSFX('bubble');
+    this.setState(p => {
+      const d = { ...p.draft };
+      d.walk = !d.walk;
+      if (!d.walk) {
+        d.milenaJoined = false;
+      }
+      return { draft: d };
+    });
+  }
+
+  toggleMilena() {
+    this.playSFX('bubble');
+    this.setState(p => {
+      const d = { ...p.draft };
+      d.milenaJoined = !d.milenaJoined;
+      return { draft: d };
+    });
+  }
+
+  setSteps(ev) {
+    const val = parseInt(ev.target.value, 10) || 5000;
+    this.setState(p => ({ draft: { ...p.draft, walkSteps: val } }));
+  }
+
+  saveDay() {
+    const ds = this.state.openDay, d = this.state.draft;
+    const clean = {
+      zumba: !!d.zumba,
+      swim: !!d.swim,
+      walkSteps: d.walk ? parseInt(d.walkSteps, 10) : 0,
+      milenaJoined: d.walk ? !!d.milenaJoined : false
+    };
+    
+    const has = clean.zumba || clean.swim || clean.walkSteps > 0;
+    const log = { ...this.state.log };
+    if (has) log[ds] = clean; else delete log[ds];
+    
+    let celeb = null;
+    if (has) {
+      celeb = this.buildCelebMessage(ds, log[ds], log);
+    }
+    
+    this.setState({ log }, () => {
+      this.persist();
+      if (has) {
+        const reqDays = this.state.settings ? this.state.settings.reqDaysPerWeek : 3;
+        const currentWeekKey = this.getWeekKey(ds);
+        const activeDaysInWeek = this.countActiveDaysInWeek(currentWeekKey, log);
+        const isGoalMetNow = activeDaysInWeek >= reqDays;
+        
+        this.playSFX(isGoalMetNow ? 'fanfare' : 'splash');
+        
+        // Spawn 60 massive bubbles from the bottom area of the modal
+        this.spawnBurst(window.innerWidth / 2, window.innerHeight * 0.58, 60);
+        
+        if (isGoalMetNow) {
+          this.launchCelebrationEffect();
+        }
+      } else {
+        this.playSFX('splash');
+      }
+      
+      // Delay closing modal slightly so the user sees the bubbles flying
+      setTimeout(() => {
+        this.setState({ openDay: null, draft: null, showCeleb: has, celeb });
+      }, 450);
+    });
+  }
+
+  buildCelebMessage(ds, e, log) {
+    const streak = this.calcStreak(log);
+    const activities = [];
+    if (e.zumba) activities.push("Entrenamiento de \u00c9lite (Zumba)");
+    if (e.swim) activities.push("Cruce Transatl\u00e1ntico en Pileta");
+    if (e.walkSteps > 0) {
+      const milenaText = e.milenaJoined ? " acompa\u00f1ada por Milena" : "";
+      activities.push(`caminata de ${e.walkSteps.toLocaleString()} pasos${milenaText}`);
+    }
+    
+    let title = "\u00a1Jornada de Felicidad L\u00edquida!";
+    let body = `Mari sell\u00f3 su d\u00eda haciendo: ${activities.join(" y ")}. \u00a1El agua y el cuerpo fluyen en armon\u00eda!`;
+    const img = e.swim ? "assets/natacion_cruce.png" : (e.zumba ? "assets/zumba_elite.png" : (e.milenaJoined ? "assets/caminata_charla.png" : "assets/caminata_sola.png"));
+    
+    let wa = `\u{1F30A} Felicidad L\u00edquida \u2014 Registro del ${this.legibleDate(ds)}\n\n`;
+    if (e.zumba) wa += `\u{1F483} Zumba: \u00a1Entrenamiento de \u00c9lite sellado!\n`;
+    if (e.swim) wa += `\u{1F97D} Nataci\u00f3n: \u00a1Cruce Transatl\u00e1ntico de pileta completado!\n`;
+    if (e.walkSteps > 0) {
+      wa += `\u{1F463} Caminata: ${e.walkSteps.toLocaleString()} pasos${e.milenaJoined ? ' (con Milena \u{1F476})' : ''}\n`;
+    }
+    wa += `\n\u{26A1} Racha Semanal: ${streak} ${streak === 1 ? 'semana' : 'semanas'} activa(s)\n\nLa felicidad es l\u00edquida. \u{1F30A}`;
+    
+    return { title, body, streak, wa, img };
+  }
+
+  shareCeleb() {
+    const c = this.state.celeb;
+    if (c) window.open(`https://wa.me/?text=${encodeURIComponent(c.wa)}`, '_blank');
+  }
+
+  legibleDate(ds) {
+    const [y, m, d] = ds.split('-').map(Number);
+    return `${d} de ${this.monthNames[m - 1]}`;
+  }
+
+  // --- Monthly statistics (based on current visible month) ---
+  getMonthStats() {
+    const log = this.state.log;
+    const y = this.state.viewYear, m = this.state.viewMonth;
+    let zCount = 0, sCount = 0, totalSteps = 0, mWalks = 0, mSteps = 0;
+    
+    Object.keys(log).forEach(ds => {
+      const [yy, mm, dd] = ds.split('-').map(Number);
+      if (yy === y && mm - 1 === m) {
+        const e = log[ds];
+        if (e.zumba) zCount++;
+        if (e.swim) sCount++;
+        if (e.walkSteps > 0) {
+          totalSteps += e.walkSteps;
+          if (e.milenaJoined) {
+            mWalks++;
+            mSteps += e.walkSteps;
+          }
+        }
+      }
+    });
+    
+    return {
+      zCount,
+      sCount,
+      totalSteps,
+      mWalks,
+      mSteps
+    };
+  }
+
+  openStats() { this.playSFX('bubble'); this.setState({ showStats: true }); }
+  closeStats() { this.playSFX('bubble'); this.setState({ showStats: false }); }
+
+  resetAll() {
+    if (!confirm("¿Deseas vaciar toda la bitácora? Esto borrará irreversiblemente tu racha y tus registros.")) return;
+    localStorage.removeItem('fl_log');
+    const t = new Date();
+    this.setState({ log: {}, openDay: null, draft: null, showCeleb: false, celeb: null, viewYear: t.getFullYear(), viewMonth: t.getMonth() });
+  }
+
+  onForceUpdate() {
+    if (!confirm("¿Deseas restablecer la caché offline? Esto refrescará la app con la versión más reciente.")) return;
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => { regs.forEach(r => r.unregister()); });
+    }
+    if ('caches' in window) {
+      caches.keys().then(keys => { keys.forEach(k => caches.delete(k)); });
+    }
+    setTimeout(() => { window.location.reload(true); }, 400);
+  }
+
+  rotatePrecept() {
+    if (this.state.preceptFade) return;
+    this.playSFX('bubble');
+    this.setState({ preceptFade: true }, () => {
+      setTimeout(() => {
+        this.setState(p => {
+          let next = p.preceptIdx + 1;
+          if (next >= this.precepts.length) next = 0;
+          return { preceptIdx: next, preceptFade: false };
+        });
+      }, 200);
+    });
+  }
+
+  updateOceanSound() {
+    if (this.state.settings && this.state.settings.soundEnabled) {
+      if (!this.ocean) {
+        this.ocean = new OceanNoise();
+        const start = () => {
+          if (this.ocean && !this.ocean.ctx) {
+            this.ocean.start();
+          }
+        };
+        start();
+        document.addEventListener('click', start, { once: true });
+        document.addEventListener('touchstart', start, { once: true });
+      }
+    } else {
+      if (this.ocean) {
+        this.ocean.stop();
+        this.ocean = null;
+      }
+    }
+  }
+
+  // --- Particle Celebration Effects (Bubbles / Water spray) ---
+  componentDidMount() {
+    const c = this.canvasRef.current; if (!c) return;
+    this.pctx = c.getContext('2d'); this.particles = []; this.launchers = []; this._raf = null;
+    this._resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; };
+    this._resize(); window.addEventListener('resize', this._resize);
+    this.colors = ['#00F2FE', '#4FACFE', '#7FBEE5', '#F0F8F8', '#E2BA6E'];
+    this.updateOceanSound();
+  }
+  
+  componentWillUnmount() {
+    cancelAnimationFrame(this._raf);
+    clearInterval(this._ci);
+    window.removeEventListener('resize', this._resize);
+    if (this.ocean) {
+      this.ocean.stop();
+      this.ocean = null;
+    }
+  }
+
+  spawnBurst(x, y, count = 20) {
+    if (!this.pctx) return;
+    for (let i = 0; i < count; i++) {
+      const a = Math.random() * Math.PI * 2, sp = Math.random() * 3.5 + 2.5;
+      this.particles.push({
+        x, y,
+        vx: Math.cos(a) * sp,
+        vy: Math.sin(a) * sp - 2.0,
+        r: Math.random() * 9 + 4,
+        g: -0.05,
+        o: 1,
+        decay: Math.random() * 0.006 + 0.004,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+        wobbleSpeed: Math.random() * 0.08 + 0.03,
+        wobblePhase: Math.random() * 100
+      });
+    }
+    if (!this._raf) this.animate();
+  }
+
+  launchCelebrationEffect() {
+    clearInterval(this._ci); let n = 0;
+    this._ci = setInterval(() => {
+      const c = this.canvasRef.current; if (!c) return;
+      this.launchers.push({
+        x: Math.random() * c.width * 0.8 + c.width * 0.1,
+        y: c.height,
+        ty: Math.random() * c.height * 0.4 + c.height * 0.2,
+        vx: (Math.random() * 0.1 - 0.05) * 8,
+        vy: -(Math.random() * 4 + 7),
+        color: '#00F2FE'
+      });
+      if (!this._raf) this.animate();
+      if (++n >= 8) clearInterval(this._ci);
+    }, 300);
+  }
+
+  animate() {
+    const ctx = this.pctx, c = this.canvasRef.current; if (!ctx || !c) return;
+    ctx.clearRect(0, 0, c.width, c.height);
+    if (!this.particles.length && !this.launchers.length) { this._raf = null; return; }
+    
+    for (let i = this.launchers.length - 1; i >= 0; i--) {
+      const l = this.launchers[i];
+      l.x += l.vx; l.y += l.vy;
+      if (l.vy >= 0 || l.y <= l.ty) {
+        this.spawnBurst(l.x, l.y, 35);
+        this.launchers.splice(i, 1);
+      } else {
+        ctx.beginPath(); ctx.arc(l.x, l.y, 4, 0, Math.PI * 2); ctx.fillStyle = l.color; ctx.fill();
+      }
+    }
+    
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const p = this.particles[i];
+      p.x += p.vx; p.y += p.vy; p.vy += p.g; p.o -= p.decay;
+      if (p.o <= 0) { this.particles.splice(i, 1); continue; }
+      
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.o);
+      p.wobblePhase += p.wobbleSpeed;
+      p.x += Math.sin(p.wobblePhase) * 0.5;
+      
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+      // Inner shine for bubble effect
+      ctx.beginPath();
+      ctx.arc(p.x - p.r * 0.3, p.y - p.r * 0.3, p.r * 0.25, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.fill();
+      ctx.restore();
+    }
+    this._raf = requestAnimationFrame(() => this.animate());
+  }
+
+  // --- Rendering Data Compiler ---
+  renderVals() {
+    const todayStr = this.fmt(new Date());
+    const tnow = new Date();
+    const log = this.state.log;
+    const streak = this.calcStreak(log);
+    const d = this.state.draft;
+    
+    let activeBannerImgCount = 0;
+    if (d) {
+      if (d.zumba) activeBannerImgCount++;
+      if (d.swim) activeBannerImgCount++;
+      if (d.walk) activeBannerImgCount++;
+    }
+    const showActiveBanner = activeBannerImgCount > 0;
+
+    // --- Diquemetro calculation ---
+    const currentWeekKey = this.getWeekKey(this.fmt(new Date()));
+    const activeDaysThisWeek = this.countActiveDaysInWeek(currentWeekKey, log);
+    let diquePercent = 10;
+    let diqueLabel = "Seco \u{1F3DC}\u{FE0F} (meta de vara baja)";
+    let diqueDesc = "El embalse est\u00e1 en niveles m\u00ednimos. \u00a1Met\u00e9le un poco de agua con tus entrenamientos!";
+    if (activeDaysThisWeek === 1) {
+      diquePercent = 30;
+      diqueLabel = "Bajo \u{1F4C9}";
+      diqueDesc = "La marea empieza a subir lentamente. \u00a1Cada paso suma!";
+    } else if (activeDaysThisWeek === 2) {
+      diquePercent = 60;
+      diqueLabel = "Medio \u{1F4C8}";
+      diqueDesc = "Nivel saludable. Un esfuerzo m\u00e1s y el dique llegar\u00e1 a su nivel favorito.";
+    } else if (activeDaysThisWeek === 3) {
+      diquePercent = 90;
+      diqueLabel = "Alto \u{1F30A} (\u00a1Meta Semanal cumplida!)";
+      diqueDesc = "\u00a1Dique alto! El agua est\u00e1 en el nivel favorito de Mari.";
+    } else if (activeDaysThisWeek > 3) {
+      diquePercent = 100;
+      diqueLabel = "Rebosante \u{1F30A}\u{26F2}";
+      diqueDesc = "\u00a1Felicidad l\u00edquida total! El vertedero del dique est\u00e1 desbordando alegr\u00eda.";
+    }
+
+    const makePreviewEl = (src, emoji, bgGrad) => {
+      return React.createElement('div', {
+        key: src,
+        style: { position: 'relative', width: '100%', paddingBottom: '100%', height: 0, borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,242,254,0.18)', background: '#122842' }
+      }, React.createElement(SafeImage, {
+        src: src,
+        alt: "Vista previa",
+        fallbackEmoji: emoji,
+        bgGrad: bgGrad
+      }));
+    };
+
+    const zumbaPreviewEl = d && d.zumba ? makePreviewEl("assets/zumba_elite.png", "💃", "linear-gradient(135deg,#122842,#1C1021)") : null;
+    const swimPreviewEl = d && d.swim ? makePreviewEl("assets/natacion_cruce.png", "🥽", "linear-gradient(135deg,#122842,#0D223B)") : null;
+    const walkPreviewEl = d && d.walk ? makePreviewEl(d.milenaJoined ? "assets/caminata_charla.png" : "assets/caminata_sola.png", "👣", "linear-gradient(135deg,#122842,#231E18)") : null;
+
+    let statsHeaderSrc = 'assets/dique_seco.png';
+    if (activeDaysThisWeek === 1) statsHeaderSrc = 'assets/dique_bajo.png';
+    else if (activeDaysThisWeek === 2) statsHeaderSrc = 'assets/dique_medio.png';
+    else if (activeDaysThisWeek >= 3) statsHeaderSrc = 'assets/dique_rio_ceballos.png';
+
+    const statsHeaderEl = React.createElement('div', {
+      style: { position: 'relative', width: '100%', paddingBottom: '100%', height: 0, borderRadius: '18px', overflow: 'hidden', background: '#122842', border: '1px solid rgba(0,242,254,0.15)' }
+    }, React.createElement(SafeImage, {
+      src: statsHeaderSrc,
+      alt: 'Dique de Río Ceballos',
+      fallbackEmoji: React.createElement('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' } }, [
+        React.createElement('span', { key: 'emoji', style: { fontSize: '3rem' } }, '🌊'),
+        React.createElement('span', { key: 'label', style: { fontSize: '0.75rem', color: '#00F2FE', letterSpacing: '0.05em', textTransform: 'uppercase', fontWeight: 600 } }, 'Dique Río Ceballos')
+      ]),
+      bgGrad: 'linear-gradient(135deg,#0D1F35,#163354)'
+    }));
+
+    // --- HOY CARD ---
+    const te = log[todayStr];
+    let tHeadline, tSummary;
+    if (this.didSomething(te)) {
+      tHeadline = "¡Día completado! 🌊";
+      const parts = [];
+      if (te.zumba) parts.push("Zumba de élite 💃");
+      if (te.swim) parts.push("Cruce transatlántico 🥽");
+      if (te.walkSteps > 0) parts.push(`Caminata (${te.walkSteps.toLocaleString()} pasos${te.milenaJoined ? ' con Milena 👶' : ''})`);
+      tSummary = parts.join(" · ");
+    } else {
+      tHeadline = "Tu marea de hoy aguarda";
+      tSummary = "Aún no registraste actividad física para el día de hoy. ¡Tocá abajo para sellar tu jornada!";
+    }
+
+    // --- CALENDAR CELLS ---
+    const y = this.state.viewYear, m = this.state.viewMonth;
+    const firstDow = (new Date(y, m, 1).getDay() + 6) % 7; // Monday index
+    const daysIn = new Date(y, m + 1, 0).getDate();
+    const cells = [];
+    
+    for (let i = 0; i < firstDow; i++) {
+      cells.push({ blank: true, num: "", icons: [], style: "background:transparent;border:none;aspect-ratio:1;pointer-events:none", title: "", onClick: () => {} });
+    }
+    
+    for (let d = 1; d <= daysIn; d++) {
+      const ds = this.fmt(new Date(y, m, d));
+      const e = log[ds];
+      const cellDate = new Date(y, m, d); cellDate.setHours(0, 0, 0, 0);
+      const future = cellDate > new Date(tnow.getFullYear(), tnow.getMonth(), tnow.getDate());
+      const isToday = ds === todayStr;
+      const active = this.didSomething(e);
+      
+      let bg = "rgba(255,255,255,0.015)", border = "1px solid rgba(255,255,255,0.04)", fg = "#9FB0C0";
+      
+      if (future) {
+        bg = "transparent";
+        border = "1px solid rgba(255,255,255,0.01)";
+        fg = "rgba(255,255,255,0.1)";
+      } else {
+        if (active) {
+          bg = "rgba(0, 242, 254, 0.08)";
+          border = "1px solid rgba(0, 242, 254, 0.4)";
+          fg = "#00F2FE";
+        }
+        if (isToday) {
+          border = "2px solid #E2BA6E";
+          if (!active) fg = "#E2BA6E";
+        }
+      }
+      
+      const icons = [];
+      if (e) {
+        if (e.swim) icons.push({ el: this.iconEl("🥽", "tl") });
+        if (e.zumba) icons.push({ el: this.iconEl("💃", "tr") });
+        if (e.walkSteps > 0) icons.push({ el: this.iconEl("👣", "bl") });
+        if (e.milenaJoined) icons.push({ el: this.iconEl("👶", "br") });
+      }
+      
+      let title = `${d}/${m + 1}`;
+      if (future) title += ": Por navegar";
+      else if (active) {
+        const list = [];
+        if (e.swim) list.push("Natación");
+        if (e.zumba) list.push("Zumba");
+        if (e.walkSteps > 0) list.push(`Caminata (${e.walkSteps} pasos${e.milenaJoined ? ' con Milena' : ''})`);
+        title += ": " + list.join(" + ");
+      } else {
+        title += ": Sin actividad";
+      }
+      
+      const style = `position:relative;aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:600;cursor:${future ? 'default' : 'pointer'};font-family:'Outfit';background:${bg};border:${border};color:${fg};${future ? 'pointer-events:none' : ''};transition:all 0.15s;`;
+      
+      cells.push({
+        blank: false,
+        num: String(d),
+        icons,
+        style,
+        title,
+        onClick: future ? () => {} : () => this.openDayModal(ds)
+      });
+    }
+    
+    const monthLabel = `${this.monthNames[m]} ${y}`;
+    const atCurMonth = (y === tnow.getFullYear() && m === tnow.getMonth());
+    const nextMonthStyle = `width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#F0F8F8;font-size:1.1rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;${atCurMonth ? 'opacity:0.25;pointer-events:none' : ''}`;
+
+    // --- DIALOGS COMPILATION ---
+    const dayOpen = !!this.state.openDay;
+    let dayTitle = "", daySummary = "", draftWalk = false, draftSteps = 5000, draftStepsLabel = "5.000", zumbaColor = "rgba(255,255,255,0.15)", swimColor = "rgba(255,255,255,0.15)", walkColor = "rgba(255,255,255,0.15)", zumbaToggleLabel = "No entreno", swimToggleLabel = "No cruzó", walkToggleLabel = "No caminó", zumbaToggleStyle = "", swimToggleStyle = "", walkToggleStyle = "", zumbaSubLabel = "", swimSubLabel = "", walkSubLabel = "", milenaToggleLabel = "No", milenaToggleStyle = "";
+    
+    if (dayOpen) {
+      const ds = this.state.openDay, d = this.state.draft;
+      dayTitle = ds === todayStr ? "Hoy" : (() => {
+        const [yy, mm, dd] = ds.split('-').map(Number);
+        const dt = new Date(yy, mm - 1, dd);
+        return `${this.dows_long[dt.getDay()]} ${dd}`;
+      })();
+      
+      zumbaColor = d.zumba ? "#FF6B6B" : "rgba(255,255,255,0.15)";
+      zumbaSubLabel = d.zumba ? "¡Entrenamiento de Élite realizado! 💃" : "No entrenó Zumba hoy";
+      zumbaToggleLabel = d.zumba ? "Entrenó ✓" : "Marcar";
+      zumbaToggleStyle = `flex-shrink:0;border-radius:10px;padding:8px 14px;font-family:'Outfit';font-size:0.8rem;font-weight:700;cursor:pointer;transition:all .2s;background:${d.zumba ? 'rgba(255,107,107,0.16)' : 'rgba(255,255,255,0.03)'};border:1px solid ${d.zumba ? '#FF6B6B' : 'rgba(255,255,255,0.12)'};color:${d.zumba ? '#FF8E53' : '#9FB0C0'}`;
+      
+      swimColor = d.swim ? "#00F2FE" : "rgba(255,255,255,0.15)";
+      swimSubLabel = d.swim ? "¡Cruce Transatlántico en Pileta completado! 🥽" : "No nadó hoy";
+      swimToggleLabel = d.swim ? "Cruzó ✓" : "Marcar";
+      swimToggleStyle = `flex-shrink:0;border-radius:10px;padding:8px 14px;font-family:'Outfit';font-size:0.8rem;font-weight:700;cursor:pointer;transition:all .2s;background:${d.swim ? 'rgba(0,242,254,0.16)' : 'rgba(255,255,255,0.03)'};border:1px solid ${d.swim ? '#00F2FE' : 'rgba(255,255,255,0.12)'};color:${d.swim ? '#00F2FE' : '#9FB0C0'}`;
+      
+      draftWalk = d.walk;
+      draftSteps = d.walkSteps;
+      draftStepsLabel = d.walkSteps.toLocaleString();
+      walkColor = d.walk ? "#E2BA6E" : "rgba(255,255,255,0.15)";
+      walkSubLabel = d.walk ? `Registró caminata de ${d.walkSteps.toLocaleString()} pasos 👣` : "No caminó hoy";
+      walkToggleLabel = d.walk ? "Caminó ✓" : "Marcar";
+      walkToggleStyle = `flex-shrink:0;border-radius:10px;padding:8px 14px;font-family:'Outfit';font-size:0.8rem;font-weight:700;cursor:pointer;transition:all .2s;background:${d.walk ? 'rgba(226,186,110,0.16)' : 'rgba(255,255,255,0.03)'};border:1px solid ${d.walk ? '#E2BA6E' : 'rgba(255,255,255,0.12)'};color:${d.walk ? '#E2BA6E' : '#9FB0C0'}`;
+      
+      milenaToggleLabel = d.milenaJoined ? "Acompañó ✓" : "Acompañó";
+      milenaToggleStyle = `flex-shrink:0;border-radius:10px;padding:6px 12px;font-family:'Outfit';font-size:0.75rem;font-weight:700;cursor:pointer;transition:all .2s;background:${d.milenaJoined ? 'rgba(255,117,181,0.16)' : 'rgba(255,255,255,0.03)'};border:1px solid ${d.milenaJoined ? '#FF75B5' : 'rgba(255,255,255,0.12)'};color:${d.milenaJoined ? '#FF75B5' : '#9FB0C0'}`;
+      
+      const has = d.zumba || d.swim || d.walk;
+      daySummary = has ? "Mari sumará este día a las metas de la racha de la semana." : "Seleccioná al menos una actividad física para poder registrar la jornada.";
+    }
+
+    // --- STATISTICS DATA ---
+    const st = this.getMonthStats();
+    const activePrecept = this.precepts[this.state.preceptIdx] || this.precepts[0];
+    
+    // Estimate word count based on steps: ~1600 words per 1000 steps (~1.6 words/step)
+    const wordsSpoken = Math.round(st.mSteps * 1.6);
+
+    const c = this.state.celeb || {};
+
+    return {
+      canvasRef: this.canvasRef,
+      streak,
+      streakUnit: streak === 1 ? 'semana' : 'semanas',
+      celebStreakLabel: c.streak != null ? `${c.streak} ${c.streak === 1 ? 'semana' : 'semanas'}` : '',
+      celebImg: c.img || null,
+      celebNoImg: !c.img,
+      
+      // Stats Modal
+      showStats: this.state.showStats,
+      onOpenStats: () => this.openStats(),
+      onCloseStats: () => this.closeStats(),
+      statsZumba: `${st.zCount} ${st.zCount === 1 ? 'sesión' : 'sesiones'}`,
+      statsSwim: `${st.sCount} ${st.sCount === 1 ? 'cruce' : 'cruces'}`,
+      statsStepsLabel: `${st.totalSteps.toLocaleString()} pasos`,
+      statsMilenaStepsLabel: `${st.mSteps.toLocaleString()} pasos`,
+      statsMilenaWalks: `${st.mWalks} ${st.mWalks === 1 ? 'paseo' : 'paseos'}`,
+      statsMilenaWords: `${wordsSpoken.toLocaleString()}`,
+
+      // Main triggers
+      todayDow: this.dows_long[tnow.getDay()],
+      todayHeadline: tHeadline,
+      todaySummary: tSummary,
+      registerTodayLabel: this.didSomething(te) ? "Editar jornada de hoy" : "Registrar jornada de hoy",
+      onRegisterToday: () => this.openDayModal(todayStr),
+      
+      // Calendar
+      dowHeaders: this.dows,
+      cells,
+      monthLabel,
+      nextMonthStyle,
+      onPrevMonth: () => this.prevMonth(),
+      onNextMonth: () => this.nextMonth(),
+
+      // Day Modal Bindings
+      dayOpen,
+      dayTitle,
+      daySummary,
+      zumbaColor,
+      swimColor,
+      walkColor,
+      zumbaToggleLabel,
+      swimToggleLabel,
+      walkToggleLabel,
+      zumbaToggleStyle,
+      swimToggleStyle,
+      walkToggleStyle,
+      zumbaSubLabel,
+      swimSubLabel,
+      walkSubLabel,
+      draftWalk,
+      draftSteps,
+      draftStepsLabel,
+      onToggleZumba: () => this.toggleZumba(),
+      onToggleSwim: () => this.toggleSwim(),
+      onToggleWalk: () => this.toggleWalk(),
+      onSetSteps: (ev) => this.setSteps(ev),
+      onToggleMilena: () => this.toggleMilena(),
+      milenaToggleLabel,
+      milenaToggleStyle,
+      onSaveDay: () => this.saveDay(),
+      onCloseDay: () => this.closeDay(),
+
+      // Celebration
+      showCeleb: this.state.showCeleb,
+      celebTitle: c.title,
+      celebBody: c.body,
+      onShareCeleb: () => this.shareCeleb(),
+      onCloseCeleb: () => { this.setState({ showCeleb: false }); this.launchers = []; },
+      
+      // Precepts
+      activePreceptTitle: activePrecept.title,
+      activePreceptText: activePrecept.text,
+      preceptFade: this.state.preceptFade,
+      onRotatePrecept: () => this.rotatePrecept(),
+
+      // Diquemetro
+      diquePercent,
+      diqueLabel,
+      diqueDesc,
+
+      // Milena Modal Triggers
+      showMilenaModal: this.state.showMilenaModal,
+      onOpenMilenaModal: () => { this.playSFX('bubble'); this.setState({ showMilenaModal: true }); },
+      onCloseMilenaModal: () => { this.playSFX('bubble'); this.setState({ showMilenaModal: false }); },
+
+      // Settings Modal Triggers
+      showSettingsModal: this.state.showSettingsModal,
+      draftMinSteps: this.state.draftMinSteps,
+      draftMinStepsLabel: this.state.draftMinSteps.toLocaleString(),
+      draftReqDays: this.state.draftReqDays,
+      draftSfxEnabled: this.state.draftSfxEnabled,
+      onOpenSettingsModal: () => { this.playSFX('bubble'); this.setState({ showSettingsModal: true, draftMinSteps: this.state.settings.minSteps, draftReqDays: this.state.settings.reqDaysPerWeek, draftSfxEnabled: this.state.settings.sfxEnabled !== false }); },
+      onCloseSettingsModal: () => { this.playSFX('bubble'); this.setState({ showSettingsModal: false }); },
+      onSetMinSteps: (ev) => this.setState({ draftMinSteps: parseInt(ev.target.value, 10) || 500 }),
+      onSetReqDays: (ev) => this.setState({ draftReqDays: parseInt(ev.target.value, 10) || 3 }),
+      onToggleDraftSfx: () => { this.setState(p => { const next = !p.draftSfxEnabled; return { draftSfxEnabled: next }; }, () => { this.playSFX('bubble'); }); },
+      onSaveSettings: () => {
+        const settings = { minSteps: this.state.draftMinSteps, reqDaysPerWeek: this.state.draftReqDays, soundEnabled: this.state.settings.soundEnabled, sfxEnabled: this.state.draftSfxEnabled };
+        this.setState({ settings, showSettingsModal: false }, () => {
+          localStorage.setItem('fl_settings', JSON.stringify(settings));
+          this.playSFX('splash');
+          this.forceUpdate();
+        });
+      },
+
+      // Active Banner Preview
+      activeBannerImgCount,
+      showActiveBanner,
+      draftZumba: d ? d.zumba : false,
+      draftSwim: d ? d.swim : false,
+      zumbaPreviewEl,
+      swimPreviewEl,
+      walkPreviewEl,
+
+      // Stats Header
+      statsHeaderEl,
+
+      // Sound Controls
+      soundIcon: (this.state.settings && this.state.settings.soundEnabled) ? '🔊' : '🔇',
+      onToggleSound: () => {
+        const s = { ...this.state.settings };
+        s.soundEnabled = !s.soundEnabled;
+        this.setState({ settings: s }, () => {
+          localStorage.setItem('fl_settings', JSON.stringify(s));
+          this.updateOceanSound();
+          this.forceUpdate();
+        });
+      },
+
+      // System Controls
+      onReset: () => this.resetAll(),
+      onForceUpdate: () => this.onForceUpdate()
+    };
+  }
+}
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('[PWA] Service Worker registrado:', reg.scope))
+      .catch(err => console.error('[PWA] Error registrando Service Worker:', err));
+  });
+}
+</script>
+</body>
+</html>

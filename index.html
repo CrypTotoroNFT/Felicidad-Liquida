@@ -47,6 +47,29 @@
 
 <div style="background:radial-gradient(circle at 50% 0%, #0C213A 0%, #060F1A 70%);min-height:100vh;display:flex;justify-content:center;padding-bottom:50px">
 <canvas ref="{{ canvasRef }}" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:20000"></canvas>
+<!-- INTRO SPLASH SCREEN -->
+<sc-if value="{{ showIntro }}">
+  <div style="position:fixed;inset:0;background:#060F1A;z-index:30000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease,transform 0.5s ease;opacity:{{ introFade ? 0 : 1 }};transform:{{ introFade ? 'scale(1.05)' : 'scale(1)' }};pointer-events:{{ introFade ? 'none' : 'auto' }};cursor:pointer" onClick="{{ onSkipIntro }}">
+    <!-- Background Video -->
+    <video autoplay="{{ true }}" loop="{{ true }}" muted="{{ true }}" playsinline="{{ true }}" onended="this.play()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.22;mix-blend-mode:screen;pointer-events:none">
+      <source src="assets/water_ripples.mp4" type="video/mp4">
+    </video>
+    
+    <!-- Logo Container -->
+    <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px;animation:flScale 0.8s cubic-bezier(.34,1.56,.64,1) both;text-align:center">
+      <div style="width:130px;height:130px;border-radius:50%;border:3px solid #00F2FE;overflow:hidden;box-shadow:0 0 30px rgba(0,242,254,0.4);background:#0C213A;display:flex;align-items:center;justify-content:center">
+        <img src="assets/felicidad_liquida_logo.png" style="width:85%;height:85%;object-fit:contain" alt="Felicidad Líquida Logo">
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;line-height:1.2;margin-top:8px">
+        <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;color:#F0F8F8;font-weight:700">Felicidad Líquida</h1>
+        <span style="font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:#00F2FE;font-weight:700;margin-top:8px">La felicidad es líquida</span>
+      </div>
+    </div>
+    
+    <!-- Tap to skip hint -->
+    <span style="position:absolute;bottom:40px;font-size:0.72rem;color:#6C849B;letter-spacing:0.05em;text-transform:uppercase;opacity:0.6;font-weight:600">Tocar para omitir ⚓</span>
+  </div>
+</sc-if>
 
 <!-- CELEBRATION MODAL -->
 <sc-if value="{{ showCeleb }}">
@@ -188,28 +211,35 @@
       {{ statsHeaderEl }}
 
       <!-- DIQUEMETRO DE RIO CEBALLOS -->
-      <div style="background:rgba(0,242,254,0.04);border:1px solid rgba(0,242,254,0.15);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;margin-top:5px">
-        <div style="display:flex;justify-content:space-between;align-items:center;line-height:1.2">
-          <div style="display:flex;flex-direction:column">
-            <span style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#00F2FE;font-weight:700">Estado del Embalse</span>
-            <span style="font-size:0.95rem;font-weight:800;color:#F0F8F8;margin-top:2px">Dique La Quebrada</span>
-          </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.15rem;color:#00F2FE;font-weight:700">{{ diquePercent }}%</span>
-        </div>
+      <div style="background:rgba(0,242,254,0.04);border:1px solid rgba(0,242,254,0.15);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;margin-top:5px;position:relative;overflow:hidden;flex-shrink:0">
+        <!-- Background video with ripples -->
+        <video autoplay="{{ true }}" loop="{{ true }}" muted="{{ true }}" playsinline="{{ true }}" onended="this.play()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.12;mix-blend-mode:screen;pointer-events:none;z-index:1">
+          <source src="assets/water_ripples.mp4" type="video/mp4">
+        </video>
         
-        <!-- Progress bar -->
-        <div style="position:relative;width:100%;height:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:9px;overflow:hidden">
-          <div style="width:{{ diquePercent }}%;height:100%;background:linear-gradient(90deg,#00F2FE,#4FACFE);border-radius:9px;transition:width 0.5s ease-out;box-shadow:0 0 10px rgba(0,242,254,0.4)"></div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:3px;line-height:1.3">
-          <span style="font-size:0.8rem;font-weight:700;color:#00F2FE">Nivel: {{ diqueLabel }}</span>
-          <span style="font-size:0.72rem;color:#9FB0C0">{{ diqueDesc }}</span>
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="display:flex;flex-direction:column;justify-content:center">
+              <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#00F2FE;font-weight:700;line-height:1.2">Estado del Embalse</div>
+              <div style="font-size:0.95rem;font-weight:800;color:#F0F8F8;margin-top:4px;line-height:1.2">Dique La Quebrada</div>
+            </div>
+            <div style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#00F2FE;font-weight:700;line-height:1.2;display:flex;align-items:center">{{ diquePercent }}%</div>
+          </div>
+          
+          <!-- Progress bar -->
+          <div style="position:relative;width:100%;height:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:9px;overflow:hidden">
+            <div style="width:{{ diquePercent }}%;height:100%;background:linear-gradient(90deg,#00F2FE,#4FACFE);border-radius:9px;transition:width 0.5s ease-out;box-shadow:0 0 10px rgba(0,242,254,0.4)"></div>
+          </div>
+  
+          <div style="display:flex;flex-direction:column;gap:3px;line-height:1.3">
+            <span style="font-size:0.8rem;font-weight:700;color:#00F2FE">Nivel: {{ diqueLabel }}</span>
+            <span style="font-size:0.72rem;color:#9FB0C0">{{ diqueDesc }}</span>
+          </div>
         </div>
       </div>
 
       <!-- STATS COUNTERS -->
-      <div style="display:flex;flex-direction:column;gap:12px;margin-top:5px">
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:5px;flex-shrink:0">
         
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
           <div style="display:flex;flex-direction:column;flex:1;min-width:0">
@@ -386,18 +416,24 @@
 
   <!-- TODAY CARD -->
   <div style="position:relative;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(160deg,#0D223B 0%,#081424 60%,#040A12 100%);padding:22px 20px;box-shadow:0 18px 40px rgba(0,0,0,0.5)">
-    <img src="assets/felicidad_liquida_logo.png" style="position:absolute;top:-10px;right:-10px;width:115px;height:115px;opacity:0.15;pointer-events:none;transform:rotate(12deg);object-fit:contain" alt="Felicidad Líquida Logo">
+    <!-- Background video with ripples -->
+    <video autoplay="{{ true }}" loop="{{ true }}" muted="{{ true }}" playsinline="{{ true }}" onended="this.play()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.16;mix-blend-mode:luminosity;pointer-events:none;z-index:1">
+      <source src="assets/water_ripples.mp4" type="video/mp4">
+    </video>
+    <img src="assets/felicidad_liquida_logo.png" style="position:absolute;top:-10px;right:-10px;width:115px;height:115px;opacity:0.12;pointer-events:none;transform:rotate(12deg);object-fit:contain;z-index:1" alt="Felicidad Líquida Logo">
     
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#00F2FE;font-weight:700">Bitácora Marina · Hoy</span>
-      <span style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.3)"></span>
-      <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#9FB0C0;font-weight:600">{{ todayDow }}</span>
+    <div style="position:relative;z-index:2;display:flex;flex-direction:column;height:100%">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <span style="font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#00F2FE;font-weight:700">Bitácora Marina · Hoy</span>
+        <span style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.3)"></span>
+        <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#9FB0C0;font-weight:600">{{ todayDow }}</span>
+      </div>
+      
+      <h1 style="font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:700;line-height:1.2;color:#F0F8F8">{{ todayHeadline }}</h1>
+      <p style="font-size:0.88rem;line-height:1.5;color:#9FB0C0;margin-top:8px;max-width:340px">{{ todaySummary }}</p>
+      
+      <button onClick="{{ onRegisterToday }}" style="margin-top:18px;background:linear-gradient(135deg,#00F2FE,#4FACFE);border:none;color:#060F1A;font-family:'Outfit';font-weight:800;font-size:0.95rem;padding:14px;border-radius:14px;cursor:pointer;width:100%;box-shadow:0 6px 18px rgba(0,242,254,0.2);transition:transform 0.1s" onMouseDown="this.style.transform='scale(0.98)'" onMouseUp="this.style.transform='none'">{{ registerTodayLabel }}</button>
     </div>
-    
-    <h1 style="font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:700;line-height:1.2;color:#F0F8F8">{{ todayHeadline }}</h1>
-    <p style="font-size:0.88rem;line-height:1.5;color:#9FB0C0;margin-top:8px;max-width:340px">{{ todaySummary }}</p>
-    
-    <button onClick="{{ onRegisterToday }}" style="margin-top:18px;background:linear-gradient(135deg,#00F2FE,#4FACFE);border:none;color:#060F1A;font-family:'Outfit';font-weight:800;font-size:0.95rem;padding:14px;border-radius:14px;cursor:pointer;width:100%;box-shadow:0 6px 18px rgba(0,242,254,0.2);transition:transform 0.1s" onMouseDown="this.style.transform='scale(0.98)'" onMouseUp="this.style.transform='none'">{{ registerTodayLabel }}</button>
   </div>
 
   <!-- CALENDAR -->
@@ -695,7 +731,9 @@ class Component extends DCLogic {
       draftReqDays: 3,
       draftSfxEnabled: true,
       preceptIdx: t.getDate() % 12,
-      preceptFade: false
+      preceptFade: false,
+      showIntro: true,
+      introFade: false
     };
     this.ocean = null;
   }
@@ -1213,11 +1251,29 @@ class Component extends DCLogic {
       this.launchers = [];
     };
     window.addEventListener('popstate', this._popstate);
+
+    // Intro screen fade out timer
+    this._introTimer = setTimeout(() => {
+      this.skipIntro();
+    }, 1500);
+  }
+
+  skipIntro() {
+    if (this._introTimer) {
+      clearTimeout(this._introTimer);
+      this._introTimer = null;
+    }
+    if (!this.state.showIntro) return;
+    this.setState({ introFade: true });
+    setTimeout(() => {
+      this.setState({ showIntro: false });
+    }, 500);
   }
   
   componentWillUnmount() {
     cancelAnimationFrame(this._raf);
     clearInterval(this._ci);
+    if (this._introTimer) clearTimeout(this._introTimer);
     window.removeEventListener('resize', this._resize);
     if (this._popstate) window.removeEventListener('popstate', this._popstate);
     if (this.ocean) {
@@ -1322,25 +1378,39 @@ class Component extends DCLogic {
     // --- Diquemetro calculation ---
     const currentWeekKey = this.getWeekKey(this.fmt(new Date()));
     const activeDaysThisWeek = this.countActiveDaysInWeek(currentWeekKey, log);
+    const reqDays = this.state.settings ? this.state.settings.reqDaysPerWeek : 3;
+    const ratio = activeDaysThisWeek / reqDays;
+
     let diquePercent = 10;
     let diqueLabel = "Seco \u{1F3DC}\u{FE0F} (meta de vara baja)";
     let diqueDesc = "El embalse est\u00e1 en niveles m\u00ednimos. \u00a1Met\u00e9le un poco de agua con tus entrenamientos!";
-    if (activeDaysThisWeek === 1) {
-      diquePercent = 30;
+    let statsHeaderSrc = 'assets/dique_seco.png';
+
+    if (ratio === 0) {
+      diquePercent = 10;
+      diqueLabel = "Seco \u{1F3DC}\u{FE0F}";
+      diqueDesc = "El embalse est\u00e1 en niveles m\u00ednimos. \u00a1Met\u00e9le un poco de agua con tus entrenamientos!";
+      statsHeaderSrc = 'assets/dique_seco.png';
+    } else if (ratio < 0.45) {
+      diquePercent = Math.round(10 + ratio * 80);
       diqueLabel = "Bajo \u{1F4C9}";
       diqueDesc = "La marea empieza a subir lentamente. \u00a1Cada paso suma!";
-    } else if (activeDaysThisWeek === 2) {
-      diquePercent = 60;
+      statsHeaderSrc = 'assets/dique_bajo.png';
+    } else if (ratio < 1.0) {
+      diquePercent = Math.round(10 + ratio * 80);
       diqueLabel = "Medio \u{1F4C8}";
       diqueDesc = "Nivel saludable. Un esfuerzo m\u00e1s y el dique llegar\u00e1 a su nivel favorito.";
-    } else if (activeDaysThisWeek === 3) {
+      statsHeaderSrc = 'assets/dique_medio.png';
+    } else if (ratio === 1.0) {
       diquePercent = 90;
       diqueLabel = "Alto \u{1F30A} (\u00a1Meta Semanal cumplida!)";
       diqueDesc = "\u00a1Dique alto! El agua est\u00e1 en el nivel favorito de Mari.";
-    } else if (activeDaysThisWeek > 3) {
+      statsHeaderSrc = 'assets/dique_rio_ceballos.png';
+    } else {
       diquePercent = 100;
       diqueLabel = "Rebosante \u{1F30A}\u{26F2}";
       diqueDesc = "\u00a1Felicidad l\u00edquida total! El vertedero del dique est\u00e1 desbordando alegr\u00eda.";
+      statsHeaderSrc = 'assets/dique_rio_ceballos.png';
     }
 
     const makePreviewEl = (src, emoji, bgGrad) => {
@@ -1358,11 +1428,6 @@ class Component extends DCLogic {
     const zumbaPreviewEl = d && d.zumba ? makePreviewEl("assets/zumba_elite.png", "💃", "linear-gradient(135deg,#122842,#1C1021)") : null;
     const swimPreviewEl = d && d.swim ? makePreviewEl("assets/natacion_cruce.png", "🥽", "linear-gradient(135deg,#122842,#0D223B)") : null;
     const walkPreviewEl = d && d.walk ? makePreviewEl(d.milenaJoined ? "assets/caminata_charla.png" : "assets/caminata_sola.png", "👣", "linear-gradient(135deg,#122842,#231E18)") : null;
-
-    let statsHeaderSrc = 'assets/dique_seco.png';
-    if (activeDaysThisWeek === 1) statsHeaderSrc = 'assets/dique_bajo.png';
-    else if (activeDaysThisWeek === 2) statsHeaderSrc = 'assets/dique_medio.png';
-    else if (activeDaysThisWeek >= 3) statsHeaderSrc = 'assets/dique_rio_ceballos.png';
 
     const statsHeaderEl = React.createElement('div', {
       style: { position: 'relative', width: '100%', paddingBottom: '100%', height: 0, borderRadius: '18px', overflow: 'hidden', background: '#122842', border: '1px solid rgba(0,242,254,0.15)' }
@@ -1578,6 +1643,11 @@ class Component extends DCLogic {
       celebBody: c.body,
       onShareCeleb: () => this.shareCeleb(),
       onCloseCeleb: () => { this.popModalHistory(); this.launchers = []; },
+      
+      // Intro Splash Screen
+      showIntro: this.state.showIntro,
+      introFade: this.state.introFade,
+      onSkipIntro: () => this.skipIntro(),
       
       // Precepts
       activePreceptTitle: activePrecept.title,

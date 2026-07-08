@@ -386,6 +386,8 @@
       } else {
         if (key === "class") key = "className";
         else if (key === "for") key = "htmlFor";
+        else if (key === "autoplay") key = "autoPlay";
+        else if (key === "playsinline") key = "playsInline";
         else if (key.startsWith("on"))
           key = EVENT_MAP[key] || "on" + key[2].toUpperCase() + key.slice(3);
       }

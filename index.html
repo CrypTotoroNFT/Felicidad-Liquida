@@ -46,7 +46,7 @@
 </helmet>
 
 <div style="background:radial-gradient(circle at 50% 0%, #0C213A 0%, #060F1A 70%);min-height:100vh;display:flex;justify-content:center;padding-bottom:50px">
-<canvas ref="{{ canvasRef }}" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999"></canvas>
+<canvas ref="{{ canvasRef }}" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:20000"></canvas>
 
 <!-- CELEBRATION MODAL -->
 <sc-if value="{{ showCeleb }}">
@@ -211,44 +211,44 @@
       <!-- STATS COUNTERS -->
       <div style="display:flex;flex-direction:column;gap:12px;margin-top:5px">
         
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
-          <div style="display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
+          <div style="display:flex;flex-direction:column;flex:1;min-width:0">
             <span style="font-size:0.9rem;font-weight:700">Entrenamiento de Élite (Zumba)</span>
             <span style="font-size:0.72rem;color:#9FB0C0">Sesiones a puro ritmo</span>
           </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#FF6B6B;font-weight:700">{{ statsZumba }}</span>
+          <span style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#FF6B6B;font-weight:700;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsZumba }}</span>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
-          <div style="display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
+          <div style="display:flex;flex-direction:column;flex:1;min-width:0">
             <span style="font-size:0.9rem;font-weight:700">Cruce Transatlántico en Pileta</span>
             <span style="font-size:0.72rem;color:#9FB0C0">Sesiones acuáticas</span>
           </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#00F2FE;font-weight:700">{{ statsSwim }}</span>
+          <span style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#00F2FE;font-weight:700;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsSwim }}</span>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
-          <div style="display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
+          <div style="display:flex;flex-direction:column;flex:1;min-width:0">
             <span style="font-size:0.9rem;font-weight:700">Pasos totales caminados</span>
             <span style="font-size:0.72rem;color:#9FB0C0">Acumulado en sendas</span>
           </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#E2BA6E;font-weight:700">{{ statsStepsLabel }}</span>
+          <span style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#E2BA6E;font-weight:700;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsStepsLabel }}</span>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
-          <div style="display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
+          <div style="display:flex;flex-direction:column;flex:1;min-width:0">
             <span style="font-size:0.9rem;font-weight:700">Paseos acompañada por Milena</span>
             <span style="font-size:0.72rem;color:#9FB0C0">Pasos compartidos: {{ statsMilenaStepsLabel }}</span>
           </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#FF75B5;font-weight:700;white-space:nowrap">{{ statsMilenaWalks }}</span>
+          <span style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#FF75B5;font-weight:700;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsMilenaWalks }}</span>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px">
-          <div style="display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
+          <div style="display:flex;flex-direction:column;flex:1;min-width:0">
             <span style="font-size:0.9rem;font-weight:700">Monólogos de Milena 💬</span>
             <span style="font-size:0.72rem;color:#9FB0C0">Palabras estimadas pronunciadas</span>
           </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#FF75B5;font-weight:700;white-space:nowrap">{{ statsMilenaWords }}</span>
+          <span style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#FF75B5;font-weight:700;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsMilenaWords }}</span>
         </div>
 
       </div>
@@ -350,6 +350,12 @@
       </div>
 
       <button onClick="{{ onSaveSettings }}" style="background:linear-gradient(135deg,#00F2FE,#4FACFE);border:none;color:#060F1A;font-family:'Outfit';font-weight:800;font-size:0.95rem;padding:14px;border-radius:14px;cursor:pointer;width:100%;box-shadow:0 6px 18px rgba(0,242,254,0.2)">Guardar Ajustes ⚓</button>
+
+      <!-- SYSTEM CONTROLS -->
+      <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;margin-top:4px">
+        <button onClick="{{ onForceUpdate }}" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#9FB0C0;border-radius:12px;padding:11px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Outfit';width:100%">Actualizar aplicación ⟲</button>
+        <button onClick="{{ onReset }}" style="background:transparent;border:1px solid rgba(255,107,107,0.18);color:rgba(255,107,107,0.85);border-radius:12px;padding:11px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'Outfit';width:100%;transition:all 0.2s" onMouseOver="this.style.background='rgba(255,107,107,0.05)'" onMouseOut="this.style.background='transparent'">Vaciar Bitácora Completa 🗑️</button>
+      </div>
     </div>
   </div>
 </sc-if>
@@ -458,7 +464,7 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:10px;text-align:center">
         <span style="font-size:0.68rem;color:#9FB0C0;text-transform:uppercase;font-weight:700;letter-spacing:0.04em">Paseos Acompañados</span>
-        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#FF75B5;font-weight:700;margin-top:2px">{{ statsMilenaWalks }} veces</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#FF75B5;font-weight:700;margin-top:2px">{{ statsMilenaWalks }}</div>
       </div>
       <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:10px;text-align:center">
         <span style="font-size:0.68rem;color:#9FB0C0;text-transform:uppercase;font-weight:700;letter-spacing:0.04em">Charla Estimada</span>
@@ -483,9 +489,6 @@
     </p>
   </div>
 
-  <!-- CONTROL BUTTONS -->
-  <button onClick="{{ onReset }}" style="background:transparent;border:1px solid rgba(255,107,107,0.25);color:rgba(255,107,107,0.8);border-radius:14px;padding:12px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Outfit';margin-top:10px;transition:all 0.2s" onMouseOver="this.style.background='rgba(255,107,107,0.05)'" onMouseOut="this.style.background='transparent'">Vaciar Bitácora Completa 🗑️</button>
-  <button onClick="{{ onForceUpdate }}" style="background:transparent;border:1px solid rgba(255,255,255,0.05);color:#6C849B;border-radius:14px;padding:12px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'Outfit'">Actualizar aplicación ⟲</button>
 
 </div>
 </div>
@@ -938,18 +941,32 @@ class Component extends DCLogic {
   }
 
   // --- Day Modal Operations ---
+  pushModalHistory() {
+    const anyOpenBefore = this.state.openDay || this.state.showStats || this.state.showMilenaModal || this.state.showSettingsModal || this.state.showCeleb;
+    if (!anyOpenBefore) {
+      window.history.pushState({ modalOpen: true }, '');
+    }
+  }
+
+  popModalHistory() {
+    if (window.history.state && window.history.state.modalOpen) {
+      window.history.back();
+    }
+  }
+
   openDayModal(ds) {
     this.playSFX('bubble');
     const e = this.state.log[ds];
     const draft = e
       ? { zumba: !!e.zumba, swim: !!e.swim, walk: (e.walkSteps && e.walkSteps > 0), walkSteps: e.walkSteps || 5000, milenaJoined: !!e.milenaJoined }
       : { zumba: false, swim: false, walk: false, walkSteps: 5000, milenaJoined: false };
+    this.pushModalHistory();
     this.setState({ openDay: ds, draft });
   }
 
   closeDay() {
     this.playSFX('bubble');
-    this.setState({ openDay: null, draft: null });
+    this.popModalHistory();
   }
 
   toggleZumba() {
@@ -1036,7 +1053,11 @@ class Component extends DCLogic {
       
       // Delay closing modal slightly so the user sees the bubbles flying
       setTimeout(() => {
-        this.setState({ openDay: null, draft: null, showCeleb: has, celeb });
+        if (has) {
+          this.setState({ openDay: null, draft: null, showCeleb: true, celeb });
+        } else {
+          this.popModalHistory();
+        }
       }, 450);
     });
   }
@@ -1107,8 +1128,16 @@ class Component extends DCLogic {
     };
   }
 
-  openStats() { this.playSFX('bubble'); this.setState({ showStats: true }); }
-  closeStats() { this.playSFX('bubble'); this.setState({ showStats: false }); }
+  openStats() {
+    this.playSFX('bubble');
+    this.pushModalHistory();
+    this.setState({ showStats: true });
+  }
+
+  closeStats() {
+    this.playSFX('bubble');
+    this.popModalHistory();
+  }
 
   resetAll() {
     if (!confirm("¿Deseas vaciar toda la bitácora? Esto borrará irreversiblemente tu racha y tus registros.")) return;
@@ -1171,12 +1200,26 @@ class Component extends DCLogic {
     this._resize(); window.addEventListener('resize', this._resize);
     this.colors = ['#00F2FE', '#4FACFE', '#7FBEE5', '#F0F8F8', '#E2BA6E'];
     this.updateOceanSound();
+
+    this._popstate = (e) => {
+      this.setState({
+        openDay: null,
+        draft: null,
+        showStats: false,
+        showMilenaModal: false,
+        showSettingsModal: false,
+        showCeleb: false
+      });
+      this.launchers = [];
+    };
+    window.addEventListener('popstate', this._popstate);
   }
   
   componentWillUnmount() {
     cancelAnimationFrame(this._raf);
     clearInterval(this._ci);
     window.removeEventListener('resize', this._resize);
+    if (this._popstate) window.removeEventListener('popstate', this._popstate);
     if (this.ocean) {
       this.ocean.stop();
       this.ocean = null;
@@ -1534,7 +1577,7 @@ class Component extends DCLogic {
       celebTitle: c.title,
       celebBody: c.body,
       onShareCeleb: () => this.shareCeleb(),
-      onCloseCeleb: () => { this.setState({ showCeleb: false }); this.launchers = []; },
+      onCloseCeleb: () => { this.popModalHistory(); this.launchers = []; },
       
       // Precepts
       activePreceptTitle: activePrecept.title,
@@ -1549,8 +1592,8 @@ class Component extends DCLogic {
 
       // Milena Modal Triggers
       showMilenaModal: this.state.showMilenaModal,
-      onOpenMilenaModal: () => { this.playSFX('bubble'); this.setState({ showMilenaModal: true }); },
-      onCloseMilenaModal: () => { this.playSFX('bubble'); this.setState({ showMilenaModal: false }); },
+      onOpenMilenaModal: () => { this.playSFX('bubble'); this.pushModalHistory(); this.setState({ showMilenaModal: true }); },
+      onCloseMilenaModal: () => { this.playSFX('bubble'); this.popModalHistory(); },
 
       // Settings Modal Triggers
       showSettingsModal: this.state.showSettingsModal,
@@ -1558,8 +1601,8 @@ class Component extends DCLogic {
       draftMinStepsLabel: this.state.draftMinSteps.toLocaleString(),
       draftReqDays: this.state.draftReqDays,
       draftSfxEnabled: this.state.draftSfxEnabled,
-      onOpenSettingsModal: () => { this.playSFX('bubble'); this.setState({ showSettingsModal: true, draftMinSteps: this.state.settings.minSteps, draftReqDays: this.state.settings.reqDaysPerWeek, draftSfxEnabled: this.state.settings.sfxEnabled !== false }); },
-      onCloseSettingsModal: () => { this.playSFX('bubble'); this.setState({ showSettingsModal: false }); },
+      onOpenSettingsModal: () => { this.playSFX('bubble'); this.pushModalHistory(); this.setState({ showSettingsModal: true, draftMinSteps: this.state.settings.minSteps, draftReqDays: this.state.settings.reqDaysPerWeek, draftSfxEnabled: this.state.settings.sfxEnabled !== false }); },
+      onCloseSettingsModal: () => { this.playSFX('bubble'); this.popModalHistory(); },
       onSetMinSteps: (ev) => this.setState({ draftMinSteps: parseInt(ev.target.value, 10) || 500 }),
       onSetReqDays: (ev) => this.setState({ draftReqDays: parseInt(ev.target.value, 10) || 3 }),
       onToggleDraftSfx: () => { this.setState(p => { const next = !p.draftSfxEnabled; return { draftSfxEnabled: next }; }, () => { this.playSFX('bubble'); }); },

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'felicidad-liquida-cache-v14';
+const CACHE_NAME = 'felicidad-liquida-cache-v22';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -7,14 +7,14 @@ const ASSETS_TO_CACHE = [
   './assets/felicidad_liquida_icon.png',
   './assets/felicidad_liquida_logo.png',
   './assets/mari_milena_avatar.png',
-  './assets/zumba_elite.png',
-  './assets/natacion_cruce.png',
-  './assets/caminata_charla.png',
-  './assets/caminata_sola.png',
-  './assets/dique_rio_ceballos.png',
-  './assets/dique_seco.png',
-  './assets/dique_bajo.png',
-  './assets/dique_medio.png'
+  './assets/zumba_elite.jpeg',
+  './assets/natacion_cruce.jpeg',
+  './assets/caminata_charla.jpeg',
+  './assets/caminata_sola.jpeg',
+  './assets/dique_rio_ceballos.jpeg',
+  './assets/dique_seco.jpeg',
+  './assets/dique_bajo.jpeg',
+  './assets/dique_medio.jpeg'
 ];
 
 // Install Event - Pre-cache all static assets

@@ -21,6 +21,7 @@
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   body{background:#060F1A;font-family:'Outfit',system-ui,sans-serif;-webkit-user-select:none;user-select:none;color:#F0F8F8}
   @keyframes flFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .num{font-family:'Outfit',sans-serif;font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1}
   @keyframes flScale{from{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
   @keyframes flGlow{0%,100%{box-shadow:0 0 15px rgba(0,242,254,.15)}50%{box-shadow:0 0 30px rgba(0,242,254,.35)}}
   @keyframes waveMotion {
@@ -42,6 +43,15 @@
   input[type=range]::-webkit-slider-thumb:active{transform:scale(1.2)}
   input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:rgba(255,255,255,0.08)}
   input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#00F2FE;border:2px solid #060F1A;cursor:pointer}
+
+  /* Sliders coloreados por actividad (relleno + thumb) */
+  input.fl-range{-webkit-appearance:none;appearance:none;width:100%;background:transparent;cursor:pointer}
+  input.fl-range::-webkit-slider-runnable-track{height:6px;border-radius:99px;background:linear-gradient(90deg,var(--fl-accent,#00F2FE) 0%,var(--fl-accent,#00F2FE) var(--fl-pct,50%),rgba(255,255,255,0.08) var(--fl-pct,50%),rgba(255,255,255,0.08) 100%)}
+  input.fl-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--fl-accent,#00F2FE);border:2px solid #060F1A;margin-top:-7px;box-shadow:0 0 10px color-mix(in srgb,var(--fl-accent,#00F2FE) 55%,transparent);cursor:pointer;transition:transform 0.1s}
+  input.fl-range::-webkit-slider-thumb:active{transform:scale(1.2)}
+  input.fl-range::-moz-range-track{height:6px;border-radius:99px;background:rgba(255,255,255,0.08)}
+  input.fl-range::-moz-range-progress{height:6px;border-radius:99px;background:var(--fl-accent,#00F2FE)}
+  input.fl-range::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--fl-accent,#00F2FE);border:2px solid #060F1A;cursor:pointer}
 </style>
 </helmet>
 
@@ -77,14 +87,8 @@
     <div style="background:linear-gradient(160deg,#0D1F35,#071221);border:1px solid rgba(0,242,254,0.25);border-radius:28px;padding:32px 24px;max-width:380px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;box-shadow:0 24px 60px rgba(0,0,0,0.7);animation:flScale .38s cubic-bezier(.34,1.56,.64,1) both">
       
       <!-- Fallback illustration container -->
-      <div style="width:120px;height:120px;border-radius:24px;overflow:hidden;border:2px solid #00F2FE;animation:flGlow 2.2s infinite ease-in-out;background:#122842;display:flex;align-items:center;justify-content:center">
-        <sc-if value="{{ celebImg }}">
-          <img src="{{ celebImg }}" style="width:100%;height:100%;object-fit:cover" onError="this.style.display='none'; this.nextSibling.style.display='flex';" alt="Celebración">
-          <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:3rem">🌊</div>
-        </sc-if>
-        <sc-if value="{{ celebNoImg }}">
-          <div style="font-size:3rem">🌊</div>
-        </sc-if>
+      <div style="width:120px;height:120px;border-radius:24px;overflow:hidden;border:2px solid #00F2FE;animation:flGlow 2.2s infinite ease-in-out;background:#122842;display:flex;align-items:center;justify-content:center;position:relative">
+        {{ celebImgEl }}
       </div>
 
       <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,242,254,0.12);border:1px solid rgba(0,242,254,0.3);color:#00F2FE;padding:6px 18px;border-radius:99px;font-weight:700;font-size:0.95rem">★ {{ celebStreakLabel }} activa</span>
@@ -113,9 +117,9 @@
       <!-- ZUMBA -->
       <div style="border-radius:18px;border:1px solid rgba(255,255,255,0.05);background:rgba(18,40,66,0.4);padding:16px;display:flex;flex-direction:column;gap:14px">
         <div style="display:flex;align-items:center;gap:12px">
-          <span style="width:10px;height:10px;border-radius:50%;flex-shrink:0;background:{{ zumbaColor }}"></span>
+          <span style="flex-shrink:0;width:38px;height:38px;border-radius:11px;background:rgba(255,107,107,0.12);border:1px solid rgba(255,107,107,0.32);display:flex;align-items:center;justify-content:center;color:#FF6B6B"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V6l10-2.2V14"/><circle cx="6.3" cy="17.2" r="2.6"/><circle cx="16.3" cy="15" r="2.6"/></svg></span>
           <div style="display:flex;flex-direction:column;flex:1;line-height:1.3">
-            <span style="font-size:1rem;font-weight:700;color:#F0F8F8">Entrenamiento de Élite (Zumba) 💃</span>
+            <span style="font-size:1rem;font-weight:700;color:#F0F8F8">Entrenamiento de Élite</span>
             <span style="font-size:0.75rem;color:#AAB9C6">{{ zumbaSubLabel }}</span>
           </div>
           <button onClick="{{ onToggleZumba }}" style="{{ zumbaToggleStyle }}">{{ zumbaToggleLabel }}</button>
@@ -125,9 +129,9 @@
           <div style="border-radius:14px;border:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.015);padding:14px;display:flex;flex-direction:column;gap:12px;animation:flFade 0.2s ease">
             <div style="display:flex;align-items:center;justify-content:space-between">
               <span style="font-size:0.75rem;color:#AAB9C6;font-weight:500">Calorías quemadas</span>
-              <span style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#FF6B6B;font-weight:700">{{ draftZumbaCalsLabel }} kcal</span>
+              <span class="num" style="font-size:1.3rem;color:#FF6B6B;font-weight:800">{{ draftZumbaCalsLabel }} kcal</span>
             </div>
-            <input type="range" min="50" max="900" step="25" value="{{ draftZumbaCals }}" onInput="{{ onSetZumbaCals }}" style="width:100%;height:24px">
+            <input type="range" class="fl-range" min="50" max="900" step="25" value="{{ draftZumbaCals }}" onInput="{{ onSetZumbaCals }}" style="width:100%;height:24px;--fl-accent:#FF6B6B;--fl-pct:{{ zumbaPct }}">
           </div>
         </sc-if>
       </div>
@@ -135,9 +139,9 @@
       <!-- NATACION -->
       <div style="border-radius:18px;border:1px solid rgba(255,255,255,0.05);background:rgba(18,40,66,0.4);padding:16px;display:flex;flex-direction:column;gap:14px">
         <div style="display:flex;align-items:center;gap:12px">
-          <span style="width:10px;height:10px;border-radius:50%;flex-shrink:0;background:{{ swimColor }}"></span>
+          <span style="flex-shrink:0;width:38px;height:38px;border-radius:11px;background:rgba(0,242,254,0.12);border:1px solid rgba(0,242,254,0.32);display:flex;align-items:center;justify-content:center;color:#00F2FE"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8c2 0 2 1.4 4 1.4S9 8 11 8s2 1.4 4 1.4S17 8 21 8"/><path d="M3 13c2 0 2 1.4 4 1.4S9 13 11 13s2 1.4 4 1.4S17 13 21 13"/></svg></span>
           <div style="display:flex;flex-direction:column;flex:1;line-height:1.3">
-            <span style="font-size:1rem;font-weight:700;color:#F0F8F8">Cruce Transatlántico en Pileta 🥽</span>
+            <span style="font-size:1rem;font-weight:700;color:#F0F8F8">Cruce Transatlántico en Pileta</span>
             <span style="font-size:0.75rem;color:#AAB9C6">{{ swimSubLabel }}</span>
           </div>
           <button onClick="{{ onToggleSwim }}" style="{{ swimToggleStyle }}">{{ swimToggleLabel }}</button>
@@ -147,9 +151,9 @@
           <div style="border-radius:14px;border:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.015);padding:14px;display:flex;flex-direction:column;gap:12px;animation:flFade 0.2s ease">
             <div style="display:flex;align-items:center;justify-content:space-between">
               <span style="font-size:0.75rem;color:#AAB9C6;font-weight:500">Metros nadados</span>
-              <span style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#00F2FE;font-weight:700">{{ draftSwimMetersLabel }} m</span>
+              <span class="num" style="font-size:1.3rem;color:#00F2FE;font-weight:800">{{ draftSwimMetersLabel }} m</span>
             </div>
-            <input type="range" min="50" max="3000" step="50" value="{{ draftSwimMeters }}" onInput="{{ onSetSwimMeters }}" style="width:100%;height:24px">
+            <input type="range" class="fl-range" min="50" max="3000" step="50" value="{{ draftSwimMeters }}" onInput="{{ onSetSwimMeters }}" style="width:100%;height:24px;--fl-accent:#00F2FE;--fl-pct:{{ swimPct }}">
           </div>
         </sc-if>
       </div>
@@ -157,9 +161,9 @@
       <!-- CAMINATA -->
       <div style="border-radius:18px;border:1px solid rgba(255,255,255,0.05);background:rgba(18,40,66,0.4);padding:16px;display:flex;flex-direction:column;gap:14px">
         <div style="display:flex;align-items:center;gap:12px">
-          <span style="width:10px;height:10px;border-radius:50%;flex-shrink:0;background:{{ walkColor }}"></span>
+          <span style="flex-shrink:0;width:38px;height:38px;border-radius:11px;background:rgba(226,186,110,0.12);border:1px solid rgba(226,186,110,0.32);display:flex;align-items:center;justify-content:center;color:#E2BA6E"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="8.5" rx="2.6" ry="3.8"/><ellipse cx="15.5" cy="14" rx="2.6" ry="3.8"/></svg></span>
           <div style="display:flex;flex-direction:column;flex:1;line-height:1.3">
-            <span style="font-size:1rem;font-weight:700;color:#F0F8F8">Caminata de Pasos 👣</span>
+            <span style="font-size:1rem;font-weight:700;color:#F0F8F8">Caminata de Pasos</span>
             <span style="font-size:0.75rem;color:#AAB9C6">{{ walkSubLabel }}</span>
           </div>
           <button onClick="{{ onToggleWalk }}" style="{{ walkToggleStyle }}">{{ walkToggleLabel }}</button>
@@ -169,17 +173,17 @@
           <div style="border-radius:14px;border:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.015);padding:14px;display:flex;flex-direction:column;gap:12px;animation:flFade 0.2s ease">
             <div style="display:flex;align-items:center;justify-content:space-between">
               <span style="font-size:0.75rem;color:#AAB9C6;font-weight:500">Ajustar cantidad de pasos</span>
-              <span style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#E2BA6E;font-weight:700">{{ draftStepsLabel }} pasos</span>
+              <span class="num" style="font-size:1.3rem;color:#E2BA6E;font-weight:800">{{ draftStepsLabel }} pasos</span>
             </div>
             
             <div style="display:flex;align-items:center;gap:12px">
-              <input type="range" min="500" max="15000" step="500" value="{{ draftSteps }}" onInput="{{ onSetSteps }}" style="flex:1;height:24px">
+              <input type="range" class="fl-range" min="500" max="15000" step="500" value="{{ draftSteps }}" onInput="{{ onSetSteps }}" style="flex:1;height:24px;--fl-accent:#E2BA6E;--fl-pct:{{ walkPct }}">
             </div>
 
             <!-- MILENA OPTION -->
             <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;margin-top:4px">
               <div style="display:flex;flex-direction:column;line-height:1.25">
-                <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Acompañada por Milena 👶</span>
+                <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Acompañada por Milena</span>
                 <span style="font-size:0.7rem;color:#AAB9C6">Charla incansable durante el paseo</span>
               </div>
               <button onClick="{{ onToggleMilena }}" style="{{ milenaToggleStyle }}">{{ milenaToggleLabel }}</button>
@@ -245,7 +249,7 @@
               <div style="font-size:0.95rem;font-weight:800;color:#F0F8F8;margin-top:4px;line-height:1.2">Dique La Quebrada</div>
               <div style="font-size:0.68rem;color:#AAB9C6;margin-top:3px;line-height:1.3">Se llena con tus días activos de la semana</div>
             </div>
-            <div style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#00F2FE;font-weight:700;line-height:1.2;display:flex;align-items:center">{{ diquePercent }}%</div>
+            <div class="num" style="font-size:1.5rem;color:#00F2FE;font-weight:800;line-height:1.2;display:flex;align-items:center">{{ diquePercent }}%</div>
           </div>
           
           <!-- Progress bar -->
@@ -273,35 +277,39 @@
       <div style="display:flex;flex-direction:column;gap:12px;margin-top:5px;flex-shrink:0">
         
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
+          <span style="flex-shrink:0;width:34px;height:34px;border-radius:10px;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.28);display:flex;align-items:center;justify-content:center;color:#FF6B6B"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V6l10-2.2V14"/><circle cx="6.3" cy="17.2" r="2.6"/><circle cx="16.3" cy="15" r="2.6"/></svg></span>
           <div style="display:flex;flex-direction:column;flex:1;min-width:0">
             <span style="font-size:0.9rem;font-weight:700">Entrenamiento de Élite (Zumba)</span>
             <span style="font-size:0.72rem;color:#AAB9C6">{{ statsCalsLabel }} quemadas</span>
           </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#FF6B6B;font-weight:700;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsZumba }}</span>
+          <span class="num" style="font-size:1.35rem;color:#FF6B6B;font-weight:800;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsZumba }}</span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
+          <span style="flex-shrink:0;width:34px;height:34px;border-radius:10px;background:rgba(0,242,254,0.1);border:1px solid rgba(0,242,254,0.28);display:flex;align-items:center;justify-content:center;color:#00F2FE"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8c2 0 2 1.4 4 1.4S9 8 11 8s2 1.4 4 1.4S17 8 21 8"/><path d="M3 13c2 0 2 1.4 4 1.4S9 13 11 13s2 1.4 4 1.4S17 13 21 13"/></svg></span>
           <div style="display:flex;flex-direction:column;flex:1;min-width:0">
             <span style="font-size:0.9rem;font-weight:700">Cruce Transatlántico en Pileta</span>
             <span style="font-size:0.72rem;color:#AAB9C6">{{ statsMetersLabel }} recorridos</span>
           </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#00F2FE;font-weight:700;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsSwim }}</span>
+          <span class="num" style="font-size:1.35rem;color:#00F2FE;font-weight:800;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsSwim }}</span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
+          <span style="flex-shrink:0;width:34px;height:34px;border-radius:10px;background:rgba(226,186,110,0.1);border:1px solid rgba(226,186,110,0.28);display:flex;align-items:center;justify-content:center;color:#E2BA6E"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="8.5" rx="2.6" ry="3.8"/><ellipse cx="15.5" cy="14" rx="2.6" ry="3.8"/></svg></span>
           <div style="display:flex;flex-direction:column;flex:1;min-width:0">
             <span style="font-size:0.9rem;font-weight:700">Caminata de Pasos</span>
             <span style="font-size:0.72rem;color:#AAB9C6">{{ statsStepsLabel }} en total (con y sin Milena)</span>
           </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#E2BA6E;font-weight:700;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsWalks }}</span>
+          <span class="num" style="font-size:1.35rem;color:#E2BA6E;font-weight:800;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsWalks }}</span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,117,181,0.05);border:1px solid rgba(255,117,181,0.16);border-radius:14px;gap:8px">
+          <span style="flex-shrink:0;width:34px;height:34px;border-radius:10px;background:rgba(255,117,181,0.1);border:1px solid rgba(255,117,181,0.3);display:flex;align-items:center;justify-content:center;color:#FF75B5"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 5.1 5.6.7-4.1 3.8 1.1 5.6L12 16.8 6.9 18.5 8 12.9 3.9 9.3l5.6-.7z"/></svg></span>
           <div style="display:flex;flex-direction:column;flex:1;min-width:0">
             <span style="font-size:0.9rem;font-weight:700">Paseos acompañada por Milena</span>
-            <span style="font-size:0.72rem;color:#AAB9C6">{{ statsMilenaWords }} palabras estimadas pronunciadas 💬</span>
+            <span style="font-size:0.72rem;color:#AAB9C6">{{ statsMilenaWords }} palabras estimadas pronunciadas</span>
           </div>
-          <span style="font-family:'Playfair Display',serif;font-size:1.35rem;color:#FF75B5;font-weight:700;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsMilenaWalks }}</span>
+          <span class="num" style="font-size:1.35rem;color:#FF75B5;font-weight:800;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsMilenaWalks }}</span>
         </div>
 
       </div>
@@ -314,40 +322,40 @@
 <!-- MILENA MAGIC CARD MODAL -->
 <sc-if value="{{ showMilenaModal }}">
   <div style="position:fixed;inset:0;background:rgba(3,8,14,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;animation:flFade .3s ease both">
-    <div style="background:linear-gradient(160deg,#1C1021,#0A050D);border:2px solid #FF75B5;border-radius:24px;padding:20px;max-width:360px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 0 30px rgba(255,117,181,0.25);animation:flScale .35s cubic-bezier(.34,1.56,.64,1) both;color:#F0F8F8">
+    <div style="background:linear-gradient(160deg,#0D1F35,#071221);border:1px solid rgba(255,117,181,0.35);border-radius:24px;padding:20px;max-width:360px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,0.5),0 0 0 1px rgba(255,117,181,0.06);animation:flScale .35s cubic-bezier(.34,1.56,.64,1) both;color:#F0F8F8">
       
       <!-- Card Header -->
-      <div style="width:100%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,117,181,0.3);padding-bottom:8px">
+      <div style="width:100%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,117,181,0.22);padding-bottom:8px">
         <div style="text-align:left">
           <h2 style="font-family:'Playfair Display',serif;font-size:1.45rem;color:#FF75B5;font-weight:700">Milena</h2>
           <span style="font-size:0.68rem;color:#AAB9C6;text-transform:uppercase;font-weight:700;letter-spacing:0.05em">Copiloto de Expedición Marina ⚓</span>
         </div>
-        <span style="font-size:1.2rem">👶</span>
+        <span style="flex-shrink:0;width:34px;height:34px;border-radius:11px;background:rgba(255,117,181,0.12);border:1px solid rgba(255,117,181,0.32);display:flex;align-items:center;justify-content:center;color:#FF75B5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 5.1 5.6.7-4.1 3.8 1.1 5.6L12 16.8 6.9 18.5 8 12.9 3.9 9.3l5.6-.7z"/></svg></span>
       </div>
 
       <!-- Card Image -->
-      <div style="position:relative;width:100%;padding-bottom:55.8%;height:0;border-radius:14px;overflow:hidden;border:1px solid rgba(255,117,181,0.2);background:#23152B">
-        <img src="assets/caminata_charla.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block" onError="this.style.display='none'; this.nextSibling.style.display='flex';" />
-        <div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:3rem;background:linear-gradient(135deg,#23152B,#120B16)">👶</div>
+      <div style="position:relative;width:100%;padding-bottom:55.8%;height:0;border-radius:14px;overflow:hidden;border:1px solid rgba(255,117,181,0.2);background:#0B1B2F">
+        <img src="assets/caminata_charla.jpeg" onClick="{{ onExpandCharla }}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in" onError="this.style.display='none'; this.nextSibling.style.display='flex';" title="Ampliar imagen" />
+        <div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:3rem;background:linear-gradient(135deg,#0B1B2F,#071221)">👶</div>
       </div>
 
       <!-- Card Stats Grid -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;gap:1px;background:rgba(255,117,181,0.2);border:1px solid rgba(255,117,181,0.2);border-radius:12px;overflow:hidden;font-size:0.75rem">
-        <div style="background:#130A17;padding:8px;display:flex;flex-direction:column;align-items:center">
+      <div style="display:grid;grid-template-columns:1fr 1fr;width:100%;gap:8px;font-size:0.75rem">
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:9px;display:flex;flex-direction:column;align-items:center">
           <span style="color:#AAB9C6;text-transform:uppercase;font-size:0.6rem;font-weight:700;letter-spacing:0.04em">Edad</span>
           <span style="font-weight:700;color:#F0F8F8;font-size:0.88rem;margin-top:2px">3 años, casi</span>
         </div>
-        <div style="background:#130A17;padding:8px;display:flex;flex-direction:column;align-items:center">
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:9px;display:flex;flex-direction:column;align-items:center">
           <span style="color:#AAB9C6;text-transform:uppercase;font-size:0.6rem;font-weight:700;letter-spacing:0.04em">Temperamento</span>
-          <span style="font-weight:700;color:#FF75B5;font-size:0.88rem;margin-top:2px">Humor de papá 🎭</span>
+          <span style="font-weight:700;color:#FF75B5;font-size:0.88rem;margin-top:2px">Humor de papá</span>
         </div>
-        <div style="background:#130A17;padding:8px;display:flex;flex-direction:column;align-items:center;min-width:0">
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:9px;display:flex;flex-direction:column;align-items:center;min-width:0">
           <span style="color:#AAB9C6;text-transform:uppercase;font-size:0.6rem;font-weight:700;letter-spacing:0.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center">Palabras Habladas</span>
-          <span style="font-weight:700;color:#00F2FE;font-size:0.88rem;margin-top:2px;white-space:nowrap">{{ statsMilenaWords }} 💬</span>
+          <span class="num" style="font-weight:700;color:#00F2FE;font-size:0.88rem;margin-top:2px;white-space:nowrap">{{ statsMilenaWords }}</span>
         </div>
-        <div style="background:#130A17;padding:8px;display:flex;flex-direction:column;align-items:center">
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:9px;display:flex;flex-direction:column;align-items:center">
           <span style="color:#AAB9C6;text-transform:uppercase;font-size:0.6rem;font-weight:700;letter-spacing:0.04em">Paseos Acompañados</span>
-          <span style="font-weight:700;color:#E2BA6E;font-size:0.88rem;margin-top:2px">{{ statsMilenaWalks }}</span>
+          <span class="num" style="font-weight:700;color:#E2BA6E;font-size:0.88rem;margin-top:2px">{{ statsMilenaWalks }}</span>
         </div>
       </div>
 
@@ -377,9 +385,9 @@
       <div style="display:flex;flex-direction:column;gap:8px">
         <div style="display:flex;justify-content:space-between;align-items:baseline">
           <span style="font-size:0.88rem;font-weight:600">Pasos mínimos (Caminata)</span>
-          <span style="font-family:'Playfair Display',serif;font-size:1.15rem;color:#E2BA6E;font-weight:700">{{ draftMinStepsLabel }} pasos</span>
+          <span class="num" style="font-size:1.15rem;color:#E2BA6E;font-weight:700">{{ draftMinStepsLabel }} pasos</span>
         </div>
-        <input type="range" min="500" max="10000" step="500" value="{{ draftMinSteps }}" onInput="{{ onSetMinSteps }}" style="width:100%;height:20px">
+        <input type="range" class="fl-range" min="500" max="10000" step="500" value="{{ draftMinSteps }}" onInput="{{ onSetMinSteps }}" style="width:100%;height:22px;--fl-accent:#E2BA6E;--fl-pct:{{ minStepsPct }}">
         <span style="font-size:0.7rem;color:#AAB9C6">Caminatas con menos pasos no computarán para la racha semanal.</span>
       </div>
 
@@ -387,16 +395,16 @@
       <div style="display:flex;flex-direction:column;gap:8px">
         <div style="display:flex;justify-content:space-between;align-items:baseline">
           <span style="font-size:0.88rem;font-weight:600">Días activos requeridos</span>
-          <span style="font-family:'Playfair Display',serif;font-size:1.15rem;color:#00F2FE;font-weight:700">{{ draftReqDays }} días</span>
+          <span class="num" style="font-size:1.15rem;color:#00F2FE;font-weight:700">{{ draftReqDays }} días</span>
         </div>
-        <input type="range" min="1" max="7" step="1" value="{{ draftReqDays }}" onInput="{{ onSetReqDays }}" style="width:100%;height:20px">
+        <input type="range" class="fl-range" min="1" max="7" step="1" value="{{ draftReqDays }}" onInput="{{ onSetReqDays }}" style="width:100%;height:22px;--fl-accent:#00F2FE;--fl-pct:{{ reqDaysPct }}">
         <span style="font-size:0.7rem;color:#AAB9C6">Meta de días activos a la semana para mantener la racha.</span>
       </div>
 
       <!-- Setting 3: SFX enabled checkbox -->
       <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,242,254,0.15);border-radius:12px">
         <div style="display:flex;flex-direction:column;gap:2px">
-          <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Efectos de sonido 🫧</span>
+          <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Efectos de sonido</span>
           <span style="font-size:0.7rem;color:#AAB9C6">Sonidos al interactuar y registrar</span>
         </div>
         <input type="checkbox" checked="{{ draftSfxEnabled }}" onChange="{{ onToggleDraftSfx }}" style="width:18px;height:18px;cursor:pointer">
@@ -446,7 +454,7 @@
   <!-- TODAY CARD -->
   <div style="position:relative;border-radius:24px;overflow:hidden;border:1px solid rgba(0,242,254,0.28);background:linear-gradient(160deg,#0D223B 0%,#081424 60%,#040A12 100%);padding:24px 22px;box-shadow:0 22px 50px rgba(0,0,0,0.55),0 0 0 1px rgba(0,242,254,0.05)">
     <!-- Background video with ripples -->
-    <video autoplay="{{ true }}" loop="{{ true }}" muted="{{ true }}" playsinline="{{ true }}" onended="this.play()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.16;mix-blend-mode:luminosity;pointer-events:none;z-index:1">
+    <video autoplay="{{ true }}" loop="{{ true }}" muted="{{ true }}" playsinline="{{ true }}" onended="this.play()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.10;mix-blend-mode:luminosity;pointer-events:none;z-index:1">
       <source src="assets/water_ripples.mp4" type="video/mp4">
     </video>
     <img src="assets/felicidad_liquida_logo.png" style="position:absolute;top:-10px;right:-10px;width:115px;height:115px;opacity:0.12;pointer-events:none;transform:rotate(12deg);object-fit:contain;z-index:1" alt="Felicidad Líquida Logo">
@@ -482,7 +490,7 @@
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
       <sc-for list="{{ cells }}" as="c" hint-placeholder-count="35">
         <button onClick="{{ c.onClick }}" title="{{ c.title }}" style="{{ c.style }}">
-          <span style="position:relative;z-index:2">{{ c.num }}</span>
+          <span class="num" style="position:relative;z-index:2;line-height:1">{{ c.num }}</span>
           <sc-for list="{{ c.icons }}" as="ico" hint-placeholder-count="0">{{ ico.el }}</sc-for>
         </button>
       </sc-for>
@@ -497,10 +505,10 @@
       <sc-if value="{{ legendOpen }}">
         <div style="display:flex;flex-wrap:wrap;gap:12px 16px;margin-top:12px;animation:flFade 0.2s ease">
           <span style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#AAB9C6"><span style="width:11px;height:11px;border-radius:3px;background:rgba(0,242,254,0.15);border:1px solid rgba(0,242,254,0.3)"></span>Día Activo</span>
-          <span style="display:flex;align-items:center;gap:4px;font-size:0.72rem;color:#AAB9C6">🥽 Natación</span>
-          <span style="display:flex;align-items:center;gap:4px;font-size:0.72rem;color:#AAB9C6">💃 Zumba</span>
-          <span style="display:flex;align-items:center;gap:4px;font-size:0.72rem;color:#AAB9C6">👣 Caminata</span>
-          <span style="display:flex;align-items:center;gap:4px;font-size:0.72rem;color:#AAB9C6">👶 Milena</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#AAB9C6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00F2FE" stroke-width="1.7" stroke-linecap="round"><path d="M3 8c2 0 2 1.4 4 1.4S9 8 11 8s2 1.4 4 1.4S17 8 21 8"/><path d="M3 13c2 0 2 1.4 4 1.4S9 13 11 13s2 1.4 4 1.4S17 13 21 13"/></svg>Natación</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#AAB9C6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V6l10-2.2V14"/><circle cx="6.3" cy="17.2" r="2.6"/><circle cx="16.3" cy="15" r="2.6"/></svg>Zumba</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#AAB9C6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E2BA6E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="8.5" rx="2.6" ry="3.8"/><ellipse cx="15.5" cy="14" rx="2.6" ry="3.8"/></svg>Caminata</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#AAB9C6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF75B5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 5.1 5.6.7-4.1 3.8 1.1 5.6L12 16.8 6.9 18.5 8 12.9 3.9 9.3l5.6-.7z"/></svg>Milena</span>
         </div>
       </sc-if>
     </div>
@@ -517,10 +525,10 @@
   </button>
 
   <!-- EL RINCON DE MILENA -->
-  <div onClick="{{ onOpenMilenaModal }}" style="border-radius:20px;border:1px solid rgba(255,255,255,0.035);background:rgba(11,27,47,0.32);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:18px;cursor:pointer;transition:all 0.2s" onMouseOver="this.style.background='rgba(18,40,66,0.42)'; this.style.transform='translateY(-2px)';" onMouseOut="this.style.background='rgba(11,27,47,0.32)'; this.style.transform='none';" title="Ver carta Magic de Milena">
+  <div onClick="{{ onOpenMilenaModal }}" style="border-radius:20px;border:1px solid rgba(255,255,255,0.035);background:rgba(11,27,47,0.32);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:18px;cursor:pointer;transition:all 0.2s" onMouseOver="this.style.background='rgba(18,40,66,0.42)'; this.style.transform='translateY(-2px)';" onMouseOut="this.style.background='rgba(11,27,47,0.32)'; this.style.transform='none';" title="Ver carta de Milena">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
       <span style="font-family:'Outfit';font-weight:800;font-size:1rem;color:#F0F8F8">El Rincón de Milena</span>
-      <span style="font-size:0.72rem;color:#FF75B5;font-weight:700">Copiloto (Ver Carta 📑)</span>
+      <span style="font-size:0.72rem;color:#FF75B5;font-weight:700">Copiloto · Ver Carta</span>
     </div>
     
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
@@ -531,7 +539,7 @@
       </div>
       <div style="display:flex;flex-direction:column;gap:2px">
         <span style="font-size:0.95rem;font-weight:700;color:#F0F8F8">Milena</span>
-        <span style="font-size:0.75rem;color:#AAB9C6">3 años, casi · Heredó el humor de su papá 🎭</span>
+        <span style="font-size:0.75rem;color:#AAB9C6">3 años, casi · Heredó el humor de su papá</span>
       </div>
     </div>
 
@@ -544,11 +552,11 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:10px;text-align:center">
         <span style="font-size:0.68rem;color:#AAB9C6;text-transform:uppercase;font-weight:700;letter-spacing:0.04em">Paseos Acompañados</span>
-        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#FF75B5;font-weight:700;margin-top:2px">{{ statsMilenaWalks }}</div>
+        <div class="num" style="font-size:1.3rem;color:#FF75B5;font-weight:800;margin-top:2px">{{ statsMilenaWalks }}</div>
       </div>
       <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:10px;text-align:center">
         <span style="font-size:0.68rem;color:#AAB9C6;text-transform:uppercase;font-weight:700;letter-spacing:0.04em">Charla Estimada</span>
-        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#FF75B5;font-weight:700;margin-top:2px" title="Estimado: ~300 palabras por cada 1000 pasos">{{ statsMilenaWords }} palabras</div>
+        <div class="num" style="font-size:1.3rem;color:#FF75B5;font-weight:800;margin-top:2px" title="Estimado: ~300 palabras por cada 1000 pasos">{{ statsMilenaWords }} palabras</div>
       </div>
     </div>
   </div>
@@ -569,6 +577,22 @@
     </p>
   </div>
 
+  <!-- LIGHTBOX / EXPANDED IMAGE OVERLAY -->
+  <sc-if value="{{ expandedImage }}">
+    <div onClick="{{ onCloseLightbox }}" style="position:fixed;inset:0;background:rgba(3,8,14,0.95);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20000;padding:20px;animation:flFade .2s ease both;cursor:zoom-out">
+      
+      <!-- Close Button (click naturally bubbles up to backdrop overlay to trigger close once) -->
+      <button style="position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#F0F8F8;font-size:1.4rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;z-index:20001;transition:transform 0.15s" onMouseOver="this.style.transform='scale(1.1)'" onMouseOut="this.style.transform='scale(1)'">✕</button>
+      
+      <!-- Image Container -->
+      <div style="max-width:480px;width:100%;display:flex;flex-direction:column;align-items:center;gap:16px;animation:flScale .25s cubic-bezier(.34,1.3,.64,1) both;cursor:default" onClick="event.stopPropagation()">
+        <div style="width:100%;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:#071221;box-shadow:0 20px 60px rgba(0,0,0,0.8);position:relative;padding-bottom:55.8%;height:0">
+          <img src="{{ expandedImage }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain" alt="Expanded illustration" />
+        </div>
+      </div>
+      
+    </div>
+  </sc-if>
 
 </div>
 </div>
@@ -721,24 +745,32 @@ class Component extends DCLogic {
     }
   ];
 
-  // Helper to compile icons in specific positions in the calendar cell
-  iconEl(emoji, corner) {
+  // Helper to compile SVG line icons in specific positions in the calendar cell
+  iconEl(type, corner) {
     const pos = {
-      tl: { top: '3px', left: '3px' },
-      tr: { top: '3px', right: '3px' },
-      bl: { bottom: '3px', left: '3px' },
-      br: { bottom: '3px', right: '3px' }
+      tl: { top: '3px', left: '4px' },
+      tr: { top: '3px', right: '4px' },
+      bl: { bottom: '3px', left: '4px' },
+      br: { bottom: '3px', right: '4px' }
     }[corner];
+    
+    const svgContent = {
+      swim:  '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00F2FE" stroke-width="2.2" stroke-linecap="round"><path d="M3 9c2.5 0 2.5 1.6 5 1.6S10.5 9 13 9s2.5 1.6 5 1.6S20.5 9 21 9"/><path d="M3 15c2.5 0 2.5 1.6 5 1.6S10.5 15 13 15s2.5 1.6 5 1.6S20.5 15 21 15"/></svg>',
+      zumba: '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V6l10-2.2V14"/><circle cx="6.3" cy="17.2" r="2.6"/><circle cx="16.3" cy="15" r="2.6"/></svg>',
+      walk:  '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#E2BA6E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="8.5" rx="2.6" ry="3.8"/><ellipse cx="15.5" cy="14" rx="2.6" ry="3.8"/></svg>',
+      milena:'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FF75B5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 5.1 5.6.7-4.1 3.8 1.1 5.6L12 16.8 6.9 18.5 8 12.9 3.9 9.3l5.6-.7z"/></svg>'
+    }[type];
     
     return React.createElement('span', {
       style: {
         position: 'absolute',
+        display: 'flex',
+        zIndex: 1,
         pointerEvents: 'none',
-        zIndex: 3,
-        fontSize: '0.62rem',
         ...pos
-      }
-    }, emoji);
+      },
+      dangerouslySetInnerHTML: { __html: svgContent }
+    });
   }
 
   speakerIcon(on) {
@@ -793,7 +825,9 @@ class Component extends DCLogic {
       preceptFade: false,
       legendOpen: false,
       showIntro: true,
-      introFade: false
+      introFade: false,
+      expandedImage: null,
+      expandedImageTitle: ''
     };
     this.ocean = null;
   }
@@ -1064,6 +1098,7 @@ class Component extends DCLogic {
 
   closeDay() {
     this.playSFX('bubble');
+    this.setState({ openDay: null, draft: null });
     this.popModalHistory();
   }
 
@@ -1251,6 +1286,7 @@ class Component extends DCLogic {
 
   closeStats() {
     this.playSFX('bubble');
+    this.setState({ showStats: false });
     this.popModalHistory();
   }
 
@@ -1259,6 +1295,20 @@ class Component extends DCLogic {
     localStorage.removeItem('fl_log');
     const t = new Date();
     this.setState({ log: {}, openDay: null, draft: null, showCeleb: false, celeb: null, viewYear: t.getFullYear(), viewMonth: t.getMonth() });
+  }
+
+  expandImage(src, title) {
+    this.playSFX('bubble');
+    window.history.pushState({ lightboxOpen: true }, '');
+    this.setState({ expandedImage: src, expandedImageTitle: title });
+  }
+
+  closeLightbox() {
+    this.playSFX('bubble');
+    this.setState({ expandedImage: null, expandedImageTitle: '' });
+    if (window.history.state && window.history.state.lightboxOpen) {
+      window.history.back();
+    }
   }
 
   onForceUpdate() {
@@ -1317,14 +1367,23 @@ class Component extends DCLogic {
     this.updateOceanSound();
 
     this._popstate = (e) => {
-      this.setState({
-        openDay: null,
-        draft: null,
-        showStats: false,
-        showMilenaModal: false,
-        showSettingsModal: false,
-        showCeleb: false
-      });
+      if (e.state && e.state.modalOpen) {
+        this.setState({
+          expandedImage: null,
+          expandedImageTitle: ''
+        });
+      } else {
+        this.setState({
+          openDay: null,
+          draft: null,
+          showStats: false,
+          showMilenaModal: false,
+          showSettingsModal: false,
+          showCeleb: false,
+          expandedImage: null,
+          expandedImageTitle: ''
+        });
+      }
       this.launchers = [];
     };
     window.addEventListener('popstate', this._popstate);
@@ -1496,10 +1555,11 @@ class Component extends DCLogic {
       ? `Te ${remainingDays === 1 ? 'falta' : 'faltan'} ${remainingDays} ${remainingDays === 1 ? 'día activo' : 'días activos'} esta semana para llenar el embalse.`
       : "¡Meta semanal cumplida! El embalse está en su nivel favorito. 🌊";
 
-    const makePreviewEl = (src, emoji, bgGrad) => {
+    const makePreviewEl = (src, emoji, bgGrad, title) => {
       return React.createElement('div', {
         key: src,
-        style: { position: 'relative', width: '100%', paddingBottom: '55.8%', height: 0, borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,242,254,0.18)', background: '#122842' }
+        onClick: () => this.expandImage(src, title),
+        style: { position: 'relative', width: '100%', paddingBottom: '55.8%', height: 0, borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,242,254,0.18)', background: '#122842', cursor: 'zoom-in' }
       }, React.createElement(SafeImage, {
         src: src,
         alt: "Vista previa",
@@ -1508,12 +1568,13 @@ class Component extends DCLogic {
       }));
     };
 
-    const zumbaPreviewEl = d && d.zumba ? makePreviewEl("assets/zumba_elite.jpeg", "💃", "linear-gradient(135deg,#122842,#1C1021)") : null;
-    const swimPreviewEl = d && d.swim ? makePreviewEl("assets/natacion_cruce.jpeg", "🥽", "linear-gradient(135deg,#122842,#0D223B)") : null;
-    const walkPreviewEl = d && d.walk ? makePreviewEl(d.milenaJoined ? "assets/caminata_charla.jpeg" : "assets/caminata_sola.jpeg", "👣", "linear-gradient(135deg,#122842,#231E18)") : null;
+    const zumbaPreviewEl = d && d.zumba ? makePreviewEl("assets/zumba_elite.jpeg", "💃", "linear-gradient(135deg,#122842,#1C1021)", "Zumba de Élite") : null;
+    const swimPreviewEl = d && d.swim ? makePreviewEl("assets/natacion_cruce.jpeg", "🥽", "linear-gradient(135deg,#122842,#0D223B)", "Cruce Transatlántico en Pileta") : null;
+    const walkPreviewEl = d && d.walk ? makePreviewEl(d.milenaJoined ? "assets/caminata_charla.jpeg" : "assets/caminata_sola.jpeg", "👣", "linear-gradient(135deg,#122842,#231E18)", d.milenaJoined ? "Caminata con Milena" : "Caminata Sola") : null;
 
     const statsHeaderEl = React.createElement('div', {
-      style: { position: 'relative', width: '100%', paddingBottom: '55.8%', height: 0, borderRadius: '18px', overflow: 'hidden', background: '#122842', border: '1px solid rgba(0,242,254,0.15)' }
+      onClick: () => this.expandImage(statsHeaderSrc, 'Dique La Quebrada'),
+      style: { position: 'relative', width: '100%', paddingBottom: '55.8%', height: 0, borderRadius: '18px', overflow: 'hidden', background: '#122842', border: '1px solid rgba(0,242,254,0.15)', cursor: 'zoom-in' }
     }, React.createElement(SafeImage, {
       src: statsHeaderSrc,
       alt: 'Dique de Río Ceballos',
@@ -1530,9 +1591,9 @@ class Component extends DCLogic {
     if (this.didSomething(te)) {
       tHeadline = "¡Día completado!";
       const parts = [];
-      if (te.zumba) parts.push("Zumba de élite 💃");
-      if (te.swim) parts.push("Cruce transatlántico 🥽");
-      if (te.walkSteps > 0) parts.push(`Caminata (${te.walkSteps.toLocaleString()} pasos${te.milenaJoined ? ' con Milena 👶' : ''})`);
+      if (te.zumba) parts.push("Zumba de élite");
+      if (te.swim) parts.push("Cruce transatlántico");
+      if (te.walkSteps > 0) parts.push(`Caminata (${te.walkSteps.toLocaleString()} pasos${te.milenaJoined ? ' con Milena' : ''})`);
       tSummary = parts.join(" · ");
     } else {
       tHeadline = "Tu marea de hoy aguarda";
@@ -1577,10 +1638,10 @@ class Component extends DCLogic {
       
       const icons = [];
       if (e) {
-        if (e.swim) icons.push({ el: this.iconEl("🥽", "tl") });
-        if (e.zumba) icons.push({ el: this.iconEl("💃", "tr") });
-        if (e.walkSteps > 0) icons.push({ el: this.iconEl("👣", "bl") });
-        if (e.milenaJoined) icons.push({ el: this.iconEl("👶", "br") });
+        if (e.swim) icons.push({ el: this.iconEl("swim", "tl") });
+        if (e.zumba) icons.push({ el: this.iconEl("zumba", "tr") });
+        if (e.walkSteps > 0) icons.push({ el: this.iconEl("walk", "bl") });
+        if (e.milenaJoined) icons.push({ el: this.iconEl("milena", "br") });
       }
       
       let title = `${d}/${m + 1}`;
@@ -1595,7 +1656,7 @@ class Component extends DCLogic {
         title += ": Sin actividad";
       }
       
-      const style = `position:relative;aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:600;cursor:${future ? 'default' : 'pointer'};font-family:'Outfit';background:${bg};border:${border};color:${fg};${future ? 'pointer-events:none' : ''};transition:all 0.15s;`;
+      const style = `position:relative;height:48px;aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:700;cursor:${future ? 'default' : 'pointer'};font-family:'Outfit';background:${bg};border:${border};color:${fg};${future ? 'pointer-events:none' : ''};transition:all 0.15s;`;
       
       cells.push({
         blank: false,
@@ -1626,14 +1687,14 @@ class Component extends DCLogic {
       zumbaColor = d.zumba ? "#FF6B6B" : "rgba(255,255,255,0.15)";
       draftZumbaCals = d.zumbaCals;
       draftZumbaCalsLabel = d.zumbaCals.toLocaleString();
-      zumbaSubLabel = d.zumba ? `¡Entrenamiento de Élite! ${d.zumbaCals.toLocaleString()} kcal 💃` : "No entrenó Zumba hoy";
+      zumbaSubLabel = d.zumba ? `¡Entrenamiento de Élite! ${d.zumbaCals.toLocaleString()} kcal` : "No entrenó Zumba hoy";
       zumbaToggleLabel = d.zumba ? "Entrenó ✓" : "Marcar";
       zumbaToggleStyle = `flex-shrink:0;border-radius:10px;padding:8px 14px;font-family:'Outfit';font-size:0.8rem;font-weight:700;cursor:pointer;transition:all .2s;background:${d.zumba ? 'rgba(255,107,107,0.16)' : 'rgba(255,255,255,0.03)'};border:1px solid ${d.zumba ? '#FF6B6B' : 'rgba(255,255,255,0.12)'};color:${d.zumba ? '#FF8E53' : '#AAB9C6'}`;
       
       swimColor = d.swim ? "#00F2FE" : "rgba(255,255,255,0.15)";
       draftSwimMeters = d.swimMeters;
       draftSwimMetersLabel = d.swimMeters.toLocaleString();
-      swimSubLabel = d.swim ? `¡Cruce completado! ${d.swimMeters.toLocaleString()} m nadados 🥽` : "No nadó hoy";
+      swimSubLabel = d.swim ? `¡Cruce completado! ${d.swimMeters.toLocaleString()} m nadados` : "No nadó hoy";
       swimToggleLabel = d.swim ? "Cruzó ✓" : "Marcar";
       swimToggleStyle = `flex-shrink:0;border-radius:10px;padding:8px 14px;font-family:'Outfit';font-size:0.8rem;font-weight:700;cursor:pointer;transition:all .2s;background:${d.swim ? 'rgba(0,242,254,0.16)' : 'rgba(255,255,255,0.03)'};border:1px solid ${d.swim ? '#00F2FE' : 'rgba(255,255,255,0.12)'};color:${d.swim ? '#00F2FE' : '#AAB9C6'}`;
       
@@ -1641,7 +1702,7 @@ class Component extends DCLogic {
       draftSteps = d.walkSteps;
       draftStepsLabel = d.walkSteps.toLocaleString();
       walkColor = d.walk ? "#E2BA6E" : "rgba(255,255,255,0.15)";
-      walkSubLabel = d.walk ? `Registró caminata de ${d.walkSteps.toLocaleString()} pasos 👣` : "No caminó hoy";
+      walkSubLabel = d.walk ? `Registró caminata de ${d.walkSteps.toLocaleString()} pasos` : "No caminó hoy";
       walkToggleLabel = d.walk ? "Caminó ✓" : "Marcar";
       walkToggleStyle = `flex-shrink:0;border-radius:10px;padding:8px 14px;font-family:'Outfit';font-size:0.8rem;font-weight:700;cursor:pointer;transition:all .2s;background:${d.walk ? 'rgba(226,186,110,0.16)' : 'rgba(255,255,255,0.03)'};border:1px solid ${d.walk ? '#E2BA6E' : 'rgba(255,255,255,0.12)'};color:${d.walk ? '#E2BA6E' : '#AAB9C6'}`;
       
@@ -1651,6 +1712,13 @@ class Component extends DCLogic {
       const has = d.zumba || d.swim || d.walk;
       daySummary = has ? "Mari sumará este día a las metas de la racha de la semana." : "Seleccioná al menos una actividad física para poder registrar la jornada.";
     }
+
+    const clampPct = (v, mn, mx) => Math.max(0, Math.min(100, Math.round(((v - mn) / (mx - mn)) * 100)));
+    const zumbaPct = `${clampPct(draftZumbaCals, 50, 900)}%`;
+    const swimPct = `${clampPct(draftSwimMeters, 50, 3000)}%`;
+    const walkPct = `${clampPct(draftSteps, 500, 15000)}%`;
+    const minStepsPct = `${clampPct(this.state.draftMinSteps, 500, 10000)}%`;
+    const reqDaysPct = `${clampPct(this.state.draftReqDays, 1, 7)}%`;
 
     // --- STATISTICS DATA ---
     const st = this.getMonthStats();
@@ -1666,8 +1734,12 @@ class Component extends DCLogic {
       streak,
       streakUnit: streak === 1 ? 'semana' : 'semanas',
       celebStreakLabel: c.streak != null ? `${c.streak} ${c.streak === 1 ? 'semana' : 'semanas'}` : '',
-      celebImg: c.img || null,
-      celebNoImg: !c.img,
+      celebImgEl: c.img ? React.createElement(SafeImage, {
+        src: c.img,
+        alt: "Celebración",
+        fallbackEmoji: React.createElement('div', { style: { fontSize: '3rem' } }, '🌊'),
+        bgGrad: "linear-gradient(135deg,#0D1F35,#122842)"
+      }) : React.createElement('div', { style: { fontSize: '3rem' } }, '🌊'),
       
       // Stats Modal
       showStats: this.state.showStats,
@@ -1727,6 +1799,11 @@ class Component extends DCLogic {
       draftSwimMetersLabel,
       draftZumbaCals,
       draftZumbaCalsLabel,
+      zumbaPct,
+      swimPct,
+      walkPct,
+      minStepsPct,
+      reqDaysPct,
       onToggleZumba: () => this.toggleZumba(),
       onToggleSwim: () => this.toggleSwim(),
       onToggleWalk: () => this.toggleWalk(),
@@ -1744,7 +1821,7 @@ class Component extends DCLogic {
       celebTitle: c.title,
       celebBody: c.body,
       onShareCeleb: () => this.shareCeleb(),
-      onCloseCeleb: () => { this.popModalHistory(); this.launchers = []; },
+      onCloseCeleb: () => { this.setState({ showCeleb: false, celeb: null }); this.popModalHistory(); this.launchers = []; },
       
       // Intro Splash Screen
       showIntro: this.state.showIntro,
@@ -1767,7 +1844,7 @@ class Component extends DCLogic {
       // Milena Modal Triggers
       showMilenaModal: this.state.showMilenaModal,
       onOpenMilenaModal: () => { this.playSFX('bubble'); this.pushModalHistory(); this.setState({ showMilenaModal: true }); },
-      onCloseMilenaModal: () => { this.playSFX('bubble'); this.popModalHistory(); },
+      onCloseMilenaModal: () => { this.playSFX('bubble'); this.setState({ showMilenaModal: false }); this.popModalHistory(); },
 
       // Settings Modal Triggers
       showSettingsModal: this.state.showSettingsModal,
@@ -1776,7 +1853,7 @@ class Component extends DCLogic {
       draftReqDays: this.state.draftReqDays,
       draftSfxEnabled: this.state.draftSfxEnabled,
       onOpenSettingsModal: () => { this.playSFX('bubble'); this.pushModalHistory(); this.setState({ showSettingsModal: true, draftMinSteps: this.state.settings.minSteps, draftReqDays: this.state.settings.reqDaysPerWeek, draftSfxEnabled: this.state.settings.sfxEnabled !== false }); },
-      onCloseSettingsModal: () => { this.playSFX('bubble'); this.popModalHistory(); },
+      onCloseSettingsModal: () => { this.playSFX('bubble'); this.setState({ showSettingsModal: false }); this.popModalHistory(); },
       onSetMinSteps: (ev) => this.setState({ draftMinSteps: parseInt(ev.target.value, 10) || 500 }),
       onSetReqDays: (ev) => this.setState({ draftReqDays: parseInt(ev.target.value, 10) || 3 }),
       onToggleDraftSfx: () => { this.setState(p => { const next = !p.draftSfxEnabled; return { draftSfxEnabled: next }; }, () => { this.playSFX('bubble'); }); },
@@ -1815,7 +1892,13 @@ class Component extends DCLogic {
 
       // System Controls
       onReset: () => this.resetAll(),
-      onForceUpdate: () => this.onForceUpdate()
+      onForceUpdate: () => this.onForceUpdate(),
+
+      // Lightbox Controls
+      expandedImage: this.state.expandedImage,
+      expandedImageTitle: this.state.expandedImageTitle,
+      onCloseLightbox: () => this.closeLightbox(),
+      onExpandCharla: () => this.expandImage("assets/caminata_charla.jpeg", "Caminata con Milena")
     };
   }
 }

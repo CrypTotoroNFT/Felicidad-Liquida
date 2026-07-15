@@ -104,7 +104,7 @@
 <!-- DAY REGISTER MODAL -->
 <sc-if value="{{ dayOpen }}">
   <div style="position:fixed;inset:0;background:rgba(3,8,14,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;z-index:10000;padding:0;animation:flFade .25s ease both">
-    <div style="background:linear-gradient(180deg,#0D1F35,#071221);border:1px solid rgba(255,255,255,0.06);border-radius:28px 28px 0 0;padding:24px 20px 30px 20px;max-width:460px;width:100%;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;gap:20px;box-shadow:0 -16px 50px rgba(0,0,0,0.6);animation:flScale .32s cubic-bezier(.34,1.3,.64,1) both">
+    <div style="background:linear-gradient(180deg,#0D1F35,#071221);border:1px solid rgba(255,255,255,0.06);border-radius:28px 28px 0 0;padding:24px 20px 30px 20px;max-width:375px;width:100%;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;gap:20px;box-shadow:0 -16px 50px rgba(0,0,0,0.6);animation:flScale .32s cubic-bezier(.34,1.3,.64,1) both">
 
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
         <div style="display:flex;flex-direction:column;gap:3px">
@@ -181,10 +181,13 @@
             </div>
 
             <!-- MILENA OPTION -->
-            <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;margin-top:4px">
-              <div style="display:flex;flex-direction:column;line-height:1.25">
-                <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Acompañada por Milena</span>
-                <span style="font-size:0.7rem;color:#AAB9C6">Charla incansable durante el paseo</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;margin-top:4px">
+              <div style="display:flex;align-items:center;gap:10px;min-width:0">
+                <span style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(255,117,181,0.1);border:1px solid rgba(255,117,181,0.28);display:flex;align-items:center;justify-content:center;color:#FF75B5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 5.1 5.6.7-4.1 3.8 1.1 5.6L12 16.8 6.9 18.5 8 12.9 3.9 9.3l5.6-.7z"/></svg></span>
+                <div style="display:flex;flex-direction:column;line-height:1.25;min-width:0">
+                  <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Acompañada por Milena</span>
+                  <span style="font-size:0.7rem;color:#AAB9C6">Charla incansable durante el paseo</span>
+                </div>
               </div>
               <button onClick="{{ onToggleMilena }}" style="{{ milenaToggleStyle }}">{{ milenaToggleLabel }}</button>
             </div>
@@ -221,7 +224,7 @@
 <!-- STATS MODAL -->
 <sc-if value="{{ showStats }}">
   <div style="position:fixed;inset:0;background:rgba(3,8,14,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;z-index:10000;padding:0;animation:flFade .25s ease both">
-    <div style="background:linear-gradient(180deg,#0D1F35,#071221);border:1px solid rgba(255,255,255,0.06);border-radius:28px 28px 0 0;padding:24px 20px 30px 20px;max-width:460px;width:100%;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;gap:20px;box-shadow:0 -16px 50px rgba(0,0,0,0.6);animation:flScale .32s cubic-bezier(.34,1.3,.64,1) both">
+    <div style="background:linear-gradient(180deg,#0D1F35,#071221);border:1px solid rgba(255,255,255,0.06);border-radius:28px 28px 0 0;padding:24px 20px 30px 20px;max-width:375px;width:100%;max-height:94vh;overflow-y:auto;display:flex;flex-direction:column;gap:20px;box-shadow:0 -16px 50px rgba(0,0,0,0.6);animation:flScale .32s cubic-bezier(.34,1.3,.64,1) both">
       
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
         <div style="display:flex;flex-direction:column;gap:3px">
@@ -279,10 +282,10 @@
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
           <span style="flex-shrink:0;width:34px;height:34px;border-radius:10px;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.28);display:flex;align-items:center;justify-content:center;color:#FF6B6B"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V6l10-2.2V14"/><circle cx="6.3" cy="17.2" r="2.6"/><circle cx="16.3" cy="15" r="2.6"/></svg></span>
           <div style="display:flex;flex-direction:column;flex:1;min-width:0">
-            <span style="font-size:0.9rem;font-weight:700">Entrenamiento de Élite (Zumba)</span>
+            <span style="font-size:0.9rem;font-weight:700">Entrenamiento de Élite</span>
             <span style="font-size:0.72rem;color:#AAB9C6">{{ statsCalsLabel }} quemadas</span>
           </div>
-          <span class="num" style="font-size:1.35rem;color:#FF6B6B;font-weight:800;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsZumba }}</span>
+          <span class="num" style="font-size:1.35rem;color:#FF6B6B;font-weight:800;flex-shrink:0;white-space:nowrap">{{ statsZumba }}</span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
@@ -291,7 +294,7 @@
             <span style="font-size:0.9rem;font-weight:700">Cruce Transatlántico en Pileta</span>
             <span style="font-size:0.72rem;color:#AAB9C6">{{ statsMetersLabel }} recorridos</span>
           </div>
-          <span class="num" style="font-size:1.35rem;color:#00F2FE;font-weight:800;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsSwim }}</span>
+          <span class="num" style="font-size:1.35rem;color:#00F2FE;font-weight:800;flex-shrink:0;white-space:nowrap">{{ statsSwim }}</span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:14px;gap:8px">
@@ -300,7 +303,7 @@
             <span style="font-size:0.9rem;font-weight:700">Caminata de Pasos</span>
             <span style="font-size:0.72rem;color:#AAB9C6">{{ statsStepsLabel }} en total (con y sin Milena)</span>
           </div>
-          <span class="num" style="font-size:1.35rem;color:#E2BA6E;font-weight:800;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsWalks }}</span>
+          <span class="num" style="font-size:1.35rem;color:#E2BA6E;font-weight:800;flex-shrink:0;white-space:nowrap">{{ statsWalks }}</span>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(255,117,181,0.05);border:1px solid rgba(255,117,181,0.16);border-radius:14px;gap:8px">
@@ -309,7 +312,7 @@
             <span style="font-size:0.9rem;font-weight:700">Paseos acompañada por Milena</span>
             <span style="font-size:0.72rem;color:#AAB9C6">{{ statsMilenaWords }} palabras estimadas pronunciadas</span>
           </div>
-          <span class="num" style="font-size:1.35rem;color:#FF75B5;font-weight:800;text-align:right;min-width:120px;flex-shrink:0;white-space:nowrap">{{ statsMilenaWalks }}</span>
+          <span class="num" style="font-size:1.35rem;color:#FF75B5;font-weight:800;flex-shrink:0;white-space:nowrap">{{ statsMilenaWalks }}</span>
         </div>
 
       </div>
@@ -401,13 +404,24 @@
         <span style="font-size:0.7rem;color:#AAB9C6">Meta de días activos a la semana para mantener la racha.</span>
       </div>
 
-      <!-- Setting 3: SFX enabled checkbox -->
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(0,242,254,0.15);border-radius:12px">
-        <div style="display:flex;flex-direction:column;gap:2px">
-          <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Efectos de sonido</span>
-          <span style="font-size:0.7rem;color:#AAB9C6">Sonidos al interactuar y registrar</span>
+      <!-- Setting 3: Sound toggles (olas + SFX) -->
+      <div style="display:flex;flex-direction:column;background:rgba(255,255,255,0.02);border:1px solid rgba(0,242,254,0.15);border-radius:12px">
+        <div style="display:flex;align-items:center;gap:11px;padding:12px">
+          <span style="flex-shrink:0;width:32px;height:32px;border-radius:9px;background:rgba(0,242,254,0.1);border:1px solid rgba(0,242,254,0.28);display:flex;align-items:center;justify-content:center;color:#00F2FE"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 8c2 0 2 1.4 4 1.4S9 8 11 8s2 1.4 4 1.4S17 8 21 8"/><path d="M3 13c2 0 2 1.4 4 1.4S9 13 11 13s2 1.4 4 1.4S17 13 21 13"/></svg></span>
+          <div style="display:flex;flex-direction:column;gap:1px;flex:1;min-width:0">
+            <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Sonido de olas</span>
+            <span style="font-size:0.7rem;color:#AAB9C6">Olas de fondo mientras navegás</span>
+          </div>
+          <span onClick="{{ onToggleDraftSound }}" style="{{ wavesTrackStyle }}"><span style="{{ wavesKnobStyle }}"></span></span>
         </div>
-        <input type="checkbox" checked="{{ draftSfxEnabled }}" onChange="{{ onToggleDraftSfx }}" style="width:18px;height:18px;cursor:pointer">
+        <div style="display:flex;align-items:center;gap:11px;padding:12px;border-top:1px solid rgba(0,242,254,0.12)">
+          <span style="flex-shrink:0;width:32px;height:32px;border-radius:9px;background:rgba(0,242,254,0.1);border:1px solid rgba(0,242,254,0.28);display:flex;align-items:center;justify-content:center;color:#00F2FE"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 6.5 2.5 8.5 2.5 8.5H3.5S6 14.5 6 8z"/><path d="M10.3 20.5a1.9 1.9 0 0 0 3.4 0"/></svg></span>
+          <div style="display:flex;flex-direction:column;gap:1px;flex:1;min-width:0">
+            <span style="font-size:0.88rem;font-weight:600;color:#F0F8F8">Efectos de sonido</span>
+            <span style="font-size:0.7rem;color:#AAB9C6">Sonidos al interactuar y registrar</span>
+          </div>
+          <span onClick="{{ onToggleDraftSfx }}" style="{{ sfxTrackStyle }}"><span style="{{ sfxKnobStyle }}"></span></span>
+        </div>
       </div>
 
       <button onClick="{{ onSaveSettings }}" style="background:linear-gradient(135deg,#00F2FE,#4FACFE);border:none;color:#060F1A;font-family:'Outfit';font-weight:800;font-size:0.95rem;padding:14px;border-radius:14px;cursor:pointer;width:100%;box-shadow:0 6px 18px rgba(0,242,254,0.2)">Guardar Ajustes ⚓</button>
@@ -428,7 +442,7 @@
 </sc-if>
 
 <!-- MAIN CONTAINER -->
-<div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:14px;padding:20px 16px 90px 16px">
+<div style="width:100%;max-width:375px;display:flex;flex-direction:column;gap:14px;padding:20px 16px 90px 16px">
 
   <!-- HEADER -->
   <header style="display:flex;align-items:center;gap:13px;padding:4px 2px">
@@ -441,9 +455,6 @@
       <span style="font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:700;color:#F0F8F8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Felicidad Líquida</span>
       <span style="font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:#AAB9C6;font-weight:600;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">La felicidad es líquida</span>
     </div>
-    <button onClick="{{ onToggleSound }}" style="margin-left:auto;background:rgba(0,242,254,0.08);border:1px solid rgba(0,242,254,0.22);border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#00F2FE;transition:transform 0.15s;flex-shrink:0;margin-right:8px" onMouseOver="this.style.transform='scale(1.08)'" onMouseOut="this.style.transform='none'" title="Sonido de Olas">
-      {{ soundIcon }}
-    </button>
     <div style="display:flex;align-items:center;gap:7px;background:rgba(0,242,254,0.06);border:1px solid rgba(0,242,254,0.22);padding:6px 12px;border-radius:999px;flex-shrink:0">
       <span style="width:7px;height:7px;border-radius:50%;background:#00F2FE;box-shadow:0 0 8px rgba(0,242,254,0.8)"></span>
       <span style="font-size:0.95rem;font-weight:800;color:#00F2FE">{{ streak }}</span>
@@ -551,12 +562,12 @@
     <!-- Stats -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:10px;text-align:center">
-        <span style="font-size:0.68rem;color:#AAB9C6;text-transform:uppercase;font-weight:700;letter-spacing:0.04em">Paseos Acompañados</span>
+        <span style="font-size:0.6rem;color:#AAB9C6;text-transform:uppercase;font-weight:700;letter-spacing:0.02em;white-space:nowrap">Paseos Acompañados</span>
         <div class="num" style="font-size:1.3rem;color:#FF75B5;font-weight:800;margin-top:2px">{{ statsMilenaWalks }}</div>
       </div>
       <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:10px;text-align:center">
-        <span style="font-size:0.68rem;color:#AAB9C6;text-transform:uppercase;font-weight:700;letter-spacing:0.04em">Charla Estimada</span>
-        <div class="num" style="font-size:1.3rem;color:#FF75B5;font-weight:800;margin-top:2px" title="Estimado: ~300 palabras por cada 1000 pasos">{{ statsMilenaWords }} palabras</div>
+        <span style="font-size:0.6rem;color:#AAB9C6;text-transform:uppercase;font-weight:700;letter-spacing:0.02em;white-space:nowrap">Charla Estimada</span>
+        <div class="num" style="font-size:1.3rem;color:#FF75B5;font-weight:800;margin-top:2px;white-space:nowrap" title="Estimado: ~300 palabras por cada 1000 pasos">{{ statsMilenaWords }}<span style="font-size:0.68rem;font-weight:600;color:#AAB9C6;margin-left:3px">palabras</span></div>
       </div>
     </div>
   </div>
@@ -821,6 +832,7 @@ class Component extends DCLogic {
       draftMinSteps: 500,
       draftReqDays: 3,
       draftSfxEnabled: true,
+      draftSoundEnabled: false,
       preceptIdx: t.getDate() % 12,
       preceptFade: false,
       legendOpen: false,
@@ -1852,15 +1864,17 @@ class Component extends DCLogic {
       draftMinStepsLabel: this.state.draftMinSteps.toLocaleString(),
       draftReqDays: this.state.draftReqDays,
       draftSfxEnabled: this.state.draftSfxEnabled,
-      onOpenSettingsModal: () => { this.playSFX('bubble'); this.pushModalHistory(); this.setState({ showSettingsModal: true, draftMinSteps: this.state.settings.minSteps, draftReqDays: this.state.settings.reqDaysPerWeek, draftSfxEnabled: this.state.settings.sfxEnabled !== false }); },
+      onOpenSettingsModal: () => { this.playSFX('bubble'); this.pushModalHistory(); this.setState({ showSettingsModal: true, draftMinSteps: this.state.settings.minSteps, draftReqDays: this.state.settings.reqDaysPerWeek, draftSfxEnabled: this.state.settings.sfxEnabled !== false, draftSoundEnabled: !!this.state.settings.soundEnabled }); },
       onCloseSettingsModal: () => { this.playSFX('bubble'); this.setState({ showSettingsModal: false }); this.popModalHistory(); },
       onSetMinSteps: (ev) => this.setState({ draftMinSteps: parseInt(ev.target.value, 10) || 500 }),
       onSetReqDays: (ev) => this.setState({ draftReqDays: parseInt(ev.target.value, 10) || 3 }),
       onToggleDraftSfx: () => { this.setState(p => { const next = !p.draftSfxEnabled; return { draftSfxEnabled: next }; }, () => { this.playSFX('bubble'); }); },
+      onToggleDraftSound: () => { this.setState(p => ({ draftSoundEnabled: !p.draftSoundEnabled }), () => { this.playSFX('bubble'); }); },
       onSaveSettings: () => {
-        const settings = { minSteps: this.state.draftMinSteps, reqDaysPerWeek: this.state.draftReqDays, soundEnabled: this.state.settings.soundEnabled, sfxEnabled: this.state.draftSfxEnabled };
+        const settings = { minSteps: this.state.draftMinSteps, reqDaysPerWeek: this.state.draftReqDays, soundEnabled: this.state.draftSoundEnabled, sfxEnabled: this.state.draftSfxEnabled };
         this.setState({ settings, showSettingsModal: false }, () => {
           localStorage.setItem('fl_settings', JSON.stringify(settings));
+          this.updateOceanSound();
           this.playSFX('splash');
           this.forceUpdate();
         });
@@ -1880,6 +1894,11 @@ class Component extends DCLogic {
 
       // Sound Controls
       soundIcon: this.speakerIcon(!!(this.state.settings && this.state.settings.soundEnabled)),
+      soundEnabled: !!(this.state.settings && this.state.settings.soundEnabled),
+      wavesTrackStyle: `position:relative;width:42px;height:24px;border-radius:999px;flex-shrink:0;cursor:pointer;transition:all .2s;background:${this.state.draftSoundEnabled?'rgba(0,242,254,0.3)':'rgba(255,255,255,0.08)'};border:1px solid ${this.state.draftSoundEnabled?'rgba(0,242,254,0.5)':'rgba(255,255,255,0.15)'}`,
+      wavesKnobStyle: `position:absolute;top:1px;width:20px;height:20px;border-radius:50%;transition:all .2s;left:${this.state.draftSoundEnabled?'20px':'1px'};background:${this.state.draftSoundEnabled?'#00F2FE':'#8299AE'}`,
+      sfxTrackStyle: `position:relative;width:42px;height:24px;border-radius:999px;flex-shrink:0;cursor:pointer;transition:all .2s;background:${this.state.draftSfxEnabled?'rgba(0,242,254,0.3)':'rgba(255,255,255,0.08)'};border:1px solid ${this.state.draftSfxEnabled?'rgba(0,242,254,0.5)':'rgba(255,255,255,0.15)'}`,
+      sfxKnobStyle: `position:absolute;top:1px;width:20px;height:20px;border-radius:50%;transition:all .2s;left:${this.state.draftSfxEnabled?'20px':'1px'};background:${this.state.draftSfxEnabled?'#00F2FE':'#8299AE'}`,
       onToggleSound: () => {
         const s = { ...this.state.settings };
         s.soundEnabled = !s.soundEnabled;

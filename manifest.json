@@ -1,6 +1,6 @@
 {
-  "name": "Felicidad Líquida — Bitácora de Mari y Milena",
-  "short_name": "Felicidad L.",
+  "name": "Bitácora de Mari — La felicidad es líquida",
+  "short_name": "Bitácora Mari",
   "description": "Bitácora semanal de actividad física de Mari y Milena.",
   "start_url": "./index.html",
   "display": "standalone",

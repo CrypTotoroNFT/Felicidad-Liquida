@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#00F2FE">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Felicidad Líquida">
+<meta name="apple-mobile-web-app-title" content="Bitácora de Mari">
 <link rel="apple-touch-icon" href="./felicidad_liquida_icon.png">
 <link rel="manifest" href="./manifest.json">
 <script src="./support.js"></script>
@@ -71,7 +71,7 @@
         <img src="assets/felicidad_liquida_logo.png" style="width:85%;height:85%;object-fit:contain" alt="Felicidad Líquida Logo">
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;line-height:1.2;margin-top:8px">
-        <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;color:#F0F8F8;font-weight:700">Felicidad Líquida</h1>
+        <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;color:#F0F8F8;font-weight:700">Bitácora de Mari</h1>
         <span style="font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:#00F2FE;font-weight:700;margin-top:8px">La felicidad es líquida</span>
       </div>
     </div>
@@ -1228,11 +1228,11 @@ class Component extends DCLogic {
       activities.push(`caminata de ${e.walkSteps.toLocaleString()} pasos${milenaText}`);
     }
     
-    let title = "\u00a1Jornada de Felicidad L\u00edquida!";
+    let title = "\u00a1Jornada en la Bit\u00e1cora de Mari!";
     let body = `Mari sell\u00f3 su d\u00eda haciendo: ${activities.join(" y ")}. \u00a1El agua y el cuerpo fluyen en armon\u00eda!`;
     const img = e.swim ? "assets/natacion_cruce.jpeg" : (e.zumba ? "assets/zumba_elite.jpeg" : (e.milenaJoined ? "assets/caminata_charla.jpeg" : "assets/caminata_sola.jpeg"));
     
-    let wa = `\u{1F30A} Felicidad L\u00edquida \u2014 Registro del ${this.legibleDate(ds)}\n\n`;
+    let wa = `\u{1F30A} Bit\u00e1cora de Mari \u2014 Registro del ${this.legibleDate(ds)}\n\n`;
     if (e.zumba) wa += `\u{1F483} Zumba: \u00a1Entrenamiento de \u00c9lite sellado!\n`;
     if (e.swim) wa += `\u{1F97D} Nataci\u00f3n: \u00a1Cruce Transatl\u00e1ntico de pileta completado!\n`;
     if (e.walkSteps > 0) {

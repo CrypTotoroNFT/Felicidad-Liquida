@@ -1,4 +1,4 @@
-const CACHE_NAME = 'felicidad-liquida-cache-v36';
+const CACHE_NAME = 'felicidad-liquida-cache-v37';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

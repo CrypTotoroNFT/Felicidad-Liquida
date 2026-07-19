@@ -428,6 +428,14 @@
 
       <!-- SYSTEM CONTROLS -->
       <div style="display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;margin-top:4px">
+        <!-- Backup & Migration -->
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <button onClick="{{ onExport }}" style="background:rgba(0,242,254,0.08);border:1px solid rgba(0,242,254,0.3);color:#00F2FE;border-radius:12px;padding:11px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'Outfit';width:100%;transition:background 0.15s" onMouseOver="this.style.background='rgba(0,242,254,0.15)'" onMouseOut="this.style.background='rgba(0,242,254,0.08)'">Exportar Datos</button>
+            <button onClick="{{ onImport }}" style="background:rgba(226,186,110,0.08);border:1px solid rgba(226,186,110,0.3);color:#E2BA6E;border-radius:12px;padding:11px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'Outfit';width:100%;transition:background 0.15s" onMouseOver="this.style.background='rgba(226,186,110,0.15)'" onMouseOut="this.style.background='rgba(226,186,110,0.08)'">Importar Datos</button>
+          </div>
+          <span style="font-size:0.68rem;color:#8299AE;line-height:1.4;padding:0 2px">Usá esto para migrar tu historial entre distintos dominios o navegadores.</span>
+        </div>
         <div style="display:flex;flex-direction:column;gap:7px">
           <button onClick="{{ onForceUpdate }}" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#AAB9C6;border-radius:12px;padding:11px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Outfit';width:100%">Buscar nueva versión de la app ⟲</button>
           <span style="font-size:0.68rem;color:#8299AE;line-height:1.4;padding:0 2px">Actualiza la app si es necesario. No borra tus registros.</span>
@@ -1308,6 +1316,44 @@ class Component extends DCLogic {
     this.setState({ log: {}, openDay: null, draft: null, showCeleb: false, celeb: null, viewYear: t.getFullYear(), viewMonth: t.getMonth() });
   }
 
+  exportData() {
+    const data = {
+      log: this.state.log,
+      settings: this.state.settings
+    };
+    const str = JSON.stringify(data);
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(str).then(() => {
+      alert("¡Datos de tu bitácora copiados al portapapeles!\n\nGuardá el texto copiado en un chat o bloc de notas. Luego, en la nueva dirección privada de la app, andá a Ajustes y pegalo en la opción 'Importar'.");
+    }).catch(err => {
+      // Fallback
+      alert("No se pudo copiar automáticamente. Copiá el siguiente texto:\n\n" + str);
+    });
+  }
+
+  importData() {
+    const str = prompt("Pegá el texto de respaldo de tu bitácora aquí:");
+    if (!str) return;
+    try {
+      const data = JSON.parse(str);
+      if (!data || typeof data.log !== 'object') {
+        alert("El texto ingresado no es válido.");
+        return;
+      }
+      if (confirm("Se importarán los registros cargados de tu respaldo. Esto reemplazará tu bitácora actual. ¿Continuar?")) {
+        localStorage.setItem('fl_log', JSON.stringify(data.log));
+        if (data.settings) {
+          localStorage.setItem('fl_settings', JSON.stringify(data.settings));
+        }
+        alert("¡Respado importado con éxito! La página se recargará ahora.");
+        window.location.reload();
+      }
+    } catch(e) {
+      alert("Error al importar: el texto no es un formato válido.");
+    }
+  }
+
   expandImage(src, title) {
     this.playSFX('bubble');
     window.history.pushState({ lightboxOpen: true }, '');
@@ -1912,6 +1958,8 @@ class Component extends DCLogic {
       // System Controls
       onReset: () => this.resetAll(),
       onForceUpdate: () => this.onForceUpdate(),
+      onExport: () => this.exportData(),
+      onImport: () => this.importData(),
 
       // Lightbox Controls
       expandedImage: this.state.expandedImage,
